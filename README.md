@@ -11,8 +11,8 @@ Markdown Headers is a simple/basic Neovim plugin that allows you to easily navig
 -   It helps you keep track of your location in the document.
 -   It can improve your productivity and efficiency when writing or editing markdown documents.
 
-There are probably tons of other plugins that do the exact same thing, feel free to use them.
-I only made this plugin to learn a bit about the Neovim API and for **FUN**.
+There are probably plenty of other plugins that do the exact same thing and are probably nicer to look at 😅, feel free to use them.
+I only made this plugin to learn a bit more about the Neovim API and for **FUN** 😉.
 
 ## Installation
 
