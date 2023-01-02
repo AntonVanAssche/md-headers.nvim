@@ -21,7 +21,7 @@ I only made this plugin to learn a bit about the Neovim API and for **FUN**.
 1. Add this to your Neovim config:
 
 ```lua
-use { 'AntonVanAssche/md-headers' }
+use { 'AntonVanAssche/md-headers.nvim' }
 ```
 
 2. Run `:PackerSync` to install the plugin on your machine.
