@@ -1,3 +1,5 @@
+local popup = require("plenary.popup")
+
 local M = {}
 local headers = {}
 
@@ -48,30 +50,40 @@ local function open_header_window()
     -- Create a new buffer.
     local buffer = vim.api.nvim_create_buf(false, true)
 
-    -- Set the buffer contents.
-    for i, header in ipairs(headers) do
-        vim.api.nvim_buf_set_lines(buffer, i-1, i, false, {header.text})
+    local width = 60
+    local height = 10
+    local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+
+    -- Options for the new buffer window.
+    -- The window will open in the center of the current window.
+    local _, window = popup.create(buffer, {
+        title = "Markdown Headers",
+        highlight = "MarkdownHeadersWindow",
+        line = math.floor(((vim.o.lines - height) / 2) - 1),
+        col = math.floor((vim.o.columns - width) / 2),
+        minwidth = width,
+        minheight = height,
+        borderchars = borderchars,
+    })
+
+    -- Set the buffer options.
+    vim.api.nvim_win_set_option(
+        window.border.win_id,
+        "winhl",
+        "Normal:MarkdownHeadersBorder"
+    )
+
+    -- Add the headers to the new buffer.
+    local contents = {}
+    for _, header in ipairs(headers) do
+        table.insert(contents, header.text)
     end
+
+    -- Set the contents of the new buffer.
+    vim.api.nvim_buf_set_lines(buffer, 0, #contents, false, contents)
 
     -- Make the buffer read-only.
     vim.api.nvim_buf_set_option(buffer, "modifiable", false)
-
-    -- Options for the new buffer window.
-    -- The window will open on the left side of the current window.
-    local buffer_options = {
-        relative = "editor",
-        width = 30,
-        height = vim.api.nvim_win_get_height(0),
-        col = 0,
-        row = 0
-    }
-    -- Create a new window as a vertical split with the current buffer.
-    local window = vim.api.nvim_open_win(buffer, true, buffer_options)
-
-    -- Set the window options
-    vim.api.nvim_win_set_option(window, "number", false)
-    vim.api.nvim_win_set_option(window, "relativenumber", false)
-    vim.api.nvim_win_set_option(window, "winhl", "Normal:Title")
 
     -- Make the buffer the current buffer.
     vim.api.nvim_set_current_buf(buffer)
