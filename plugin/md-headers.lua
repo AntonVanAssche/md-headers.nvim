@@ -10,7 +10,17 @@ vim .api.nvim_create_autocmd(
     pattern = '*.md',
     callback = function()
         vim.api.nvim_create_user_command('MarkdownHeaders', function()
-            require('md-headers').markdown_headers()
+            require('md-headers').markdown_headers(false)
+        end, {})
+    end
+})
+
+vim .api.nvim_create_autocmd(
+    'BufWinEnter', {
+    pattern = '*.md',
+    callback = function()
+        vim.api.nvim_create_user_command('MarkdownHeadersClosest', function()
+            require('md-headers').markdown_headers(true)
         end, {})
     end
 })

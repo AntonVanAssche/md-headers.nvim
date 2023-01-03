@@ -7,12 +7,9 @@ local headers = {}
 -- This includes Markdown and HTML headers.
 -- Once a header is found, it is added to the headers table
 -- and will be indented with spaces according to its level.
-local function find_headers()
+local function find_headers(buffer)
     -- Clear the headers table.
     headers = {}
-
-    -- Get the current buffer.
-    local buffer = vim.api.nvim_get_current_buf()
 
     -- Get the number of lines in the buffer.
     local line_count = vim.api.nvim_buf_line_count(buffer)
@@ -45,8 +42,30 @@ local function find_headers()
     end
 end
 
--- Open a new buffer with the headers on the left side.
-local function open_header_window()
+-- Gets the closest header above the current cursor position.
+-- Returns the corresponding line inside the popup window.
+-- @return popup_window_line: number
+local function get_closest_header_above(buffer)
+    -- Get the current line.
+    local line = vim.api.nvim_win_get_cursor(0)[1]
+
+    local popup_window_line = 0
+
+    for i = 0, line do
+        local current_line = vim.api.nvim_buf_get_lines(buffer, i, i+1, false)[1]
+
+        -- If it's a Markdown header.
+        if string.match(current_line, "^#+") or string.match(current_line, "^<h%d>.*</h%d>$")then
+            popup_window_line = popup_window_line + 1
+        end
+    end
+
+    return popup_window_line
+end
+
+-- Open a popup window with the headers of the current buffer.
+-- The buffer itself is not modifiable.
+local function open_header_window(closest_header)
     -- Create a new buffer.
     local buffer = vim.api.nvim_create_buf(false, true)
 
@@ -87,6 +106,9 @@ local function open_header_window()
 
     -- Make the buffer the current buffer.
     vim.api.nvim_set_current_buf(buffer)
+
+    -- Set the cursor to the closest header.
+    vim.api.nvim_win_set_cursor(window.win_id, {closest_header, 0})
 end
 
 -- Close the buffer with the headers and navigate to the selected header.
@@ -118,12 +140,24 @@ M.close_header_window = function()
     vim.api.nvim_win_close(win, true)
 end
 
-M.markdown_headers = function()
+M.markdown_headers = function(start_on_closest)
+    -- Get the current buffer.
+    local buffer = vim.api.nvim_get_current_buf()
+
     -- Find the headers in the current buffer.
-    find_headers()
+    find_headers(buffer)
+
+    local closest_header = nil
+    if start_on_closest then
+        -- Get the closest header to the current cursor position.
+        -- In other words, the header above the current cursor.
+        closest_header = get_closest_header_above(buffer)
+    else
+        closest_header = 1
+    end
 
     -- Open the header window.
-    open_header_window()
+    open_header_window(closest_header)
 
     -- Set the window settings.
     vim.api.nvim_win_set_option(0, "number", false)
