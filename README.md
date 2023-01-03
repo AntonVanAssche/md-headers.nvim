@@ -50,7 +50,7 @@ Plug 'AntonVanAssche/md-headers.nvim'
 ## Usage
 
 You can use the ':MarkdownHeaders' command to activate the plugin and display the list of headings (these include Markdown and HTML headings).
-The plugin will open a window on the side of the main window, and the headings will be listed in the window.
+The plugin will open a floating window in the center of the Neovim session, and the headings will be listed in the window.
 You can navigate to a heading by pressing Enter on it, and the cursor will move to the corresponding heading in the main window.
 You can also press Escape or q to close the window.
 The window will also close automatically when you've selected a heading.
