@@ -21,7 +21,13 @@ I only made this plugin to learn a bit more about the Neovim API and for **FUN**
 1. Add this to your Neovim config:
 
 ```lua
-use { 'AntonVanAssche/md-headers.nvim' }
+use {
+    'AntonVanAssche/md-headers.nvim',
+    requires = {
+        'nvim-lua/plenary.nvim'
+    }
+}
+
 ```
 
 2. Run `:PackerSync` to install the plugin on your machine.
@@ -31,6 +37,7 @@ use { 'AntonVanAssche/md-headers.nvim' }
 1. Add the following to your Neovim config:
 
 ```vim
+Plug 'nvim-lua/plenary.nvim'
 Plug 'AntonVanAssche/md-headers.nvim'
 ```
 
