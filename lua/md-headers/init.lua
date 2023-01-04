@@ -7,10 +7,18 @@ local md_match_regex = '^#+ '                              -- Match markdown hea
 local md_extract_regex = '^(#+) (.*)'                      -- Extract markdown headers text and level.
 local html_match_regex = '%s*<h(%d)[^>]*>(.-)</h%d>%s*$'   -- Match html headers and extract level and text.
 
+-- Default options for the floating window.
+local settings = {
+    width = 60,
+    height = 10,
+    borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'}
+}
+
 -- Scan the current buffer for headers.
 -- This includes Markdown and HTML headers.
 -- Once a header is found, it is added to the headers table
 -- and will be indented with spaces according to its level.
+-- @param buffer: The buffer to scan.
 local function find_headers(buffer)
     -- Clear the headers table.
     headers = {}
@@ -45,6 +53,7 @@ end
 
 -- Gets the closest header above the current cursor position.
 -- Returns the corresponding line inside the popup window.
+-- @param buffer The buffer to search for headers.
 -- @return popup_window_line: number
 local function get_closest_header_above(buffer)
     -- Get the current line.
@@ -66,13 +75,14 @@ end
 
 -- Open a popup window with the headers of the current buffer.
 -- The buffer itself is not modifiable.
+-- @param closest_header: Line number of the closest header inside the popup window.
 local function open_header_window(closest_header)
     -- Create a new buffer.
     local buffer = vim.api.nvim_create_buf(false, true)
 
-    local width = 60
-    local height = 10
-    local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+    local width = settings.width
+    local height = settings.height
+    local borderchars = settings.borderchars
 
     -- Options for the new buffer window.
     -- The window will open in the center of the current window.
@@ -113,6 +123,7 @@ local function open_header_window(closest_header)
 end
 
 -- Close the buffer with the headers and navigate to the selected header.
+-- @param index: Index of the selected header inside the headers table.
 local function goto_header(index)
     -- Get the current window.
     local win = vim.api.nvim_get_current_win()
@@ -170,6 +181,17 @@ M.markdown_headers = function(start_on_closest)
     vim.api.nvim_buf_set_keymap(0, 'n', '<CR>', ':lua require("md-headers").select_header()<CR>', {noremap = true, silent = true})
     vim.api.nvim_buf_set_keymap(0, 'n', 'q', ':lua require("md-headers").close_header_window()<CR>', {noremap = true, silent = true})
     vim.api.nvim_buf_set_keymap(0, 'n', '<Esc>', ':lua require("md-headers").close_header_window()<CR>', {noremap = true, silent = true})
+end
+
+-- Set the settings, if any where passed.
+-- If none are passed, the default settings will be used.
+-- @param opts: Plugin settings.
+M.setup = function(opts)
+    if opts then
+        for k, v in pairs(opts) do
+            settings[k] = v
+        end
+    end
 end
 
 return M
