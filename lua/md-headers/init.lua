@@ -30,12 +30,10 @@ local function find_headers(buffer)
             -- Extract the heading text and the number of # characters.
             level, text = line:match(md_extract_regex)
             level = #level
-            print(level, text)
         -- Check if the line is an HTML header.
         elseif line:match(html_match_regex) then
             -- Extract the heading text and the header level.
             level, text = line:match(html_match_regex)
-            print(level, text)
         end
 
         -- Add the header to the headers table.
