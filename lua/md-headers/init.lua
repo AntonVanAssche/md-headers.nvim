@@ -3,6 +3,11 @@ local popup = require("plenary.popup")
 local M = {}
 local headers = {}
 
+local md_match_regex = '^#+ '
+local md_level_regex = '^#+'
+local md_text_regex = '^#+ (.*)'
+local html_match_regex = '%s*<h(%d)[^>]*>(.-)</h%d>%s*$'
+
 -- Scan the current buffer for headers.
 -- This includes Markdown and HTML headers.
 -- Once a header is found, it is added to the headers table
@@ -21,23 +26,20 @@ local function find_headers(buffer)
 
         -- Check if the line is a markdown header.
         local level = 0
-        if line:match("^#+ ") and not line:match("^#+ %[.*%]%(#.*%)") then
-            -- Extract the number of # characters.
-            level = #line:match("^#+")
-
-            -- Add the header to the headers table.
-            if level > 0 then
-                table.insert(headers, {line = i, text = string.rep(" ", level - 1) .. line:gsub("^#+ ", "")})
-            end
+        local text = ''
+        if line:match("^#+ ") then
+            -- Extract the heading text and the number of # characters.
+            level, text = line:match("^(#+) (.*)")
+            level = #level
         -- Check if the line is an HTML header.
-        elseif line:match("^<h%d>.*</h%d>$") then
-            -- Extract the number of h tags.
-            level = tonumber(line:match("^<h(%d)>"))
+        elseif line:match("%s*<h(%d)[^>]*>(.-)</h%d>%s*$") then
+            -- Extract the heading text and the header level.
+            level, text = line:match("<h(%d)[^>]*>(.-)</h%d>")
+        end
 
-            -- Add the header to the headers table.
-            if level > 0 then
-                table.insert(headers, {line = i, text = string.rep(" ", level - 1) .. line:match("^<h%d>(.*)</h%d>$")})
-            end
+        -- Add the header to the headers table.
+        if tonumber(level) > 0 then
+            table.insert(headers, {line = i, text = string.rep(" ", level - 1) .. text})
         end
     end
 end
@@ -55,7 +57,7 @@ local function get_closest_header_above(buffer)
         local current_line = vim.api.nvim_buf_get_lines(buffer, i, i+1, false)[1]
 
         -- If it's a Markdown header.
-        if string.match(current_line, "^#+") or string.match(current_line, "^<h%d>.*</h%d>$")then
+        if string.match(current_line, "^#+") or string.match(current_line, "%s*<h(%d)[^>]*>(.-)</h%d>%s*$")then
             popup_window_line = popup_window_line + 1
         end
     end
