@@ -14,6 +14,33 @@ Markdown Headers is a simple/basic Neovim plugin that allows you to easily navig
 There are probably plenty of other plugins that do the exact same thing and are probably nicer to look at 😅, feel free to use them.
 I only made this plugin to learn a bit more about the Neovim API and for **FUN** 😉.
 
+## Limitations
+
+Currently, the plugin is only able to recognize and extract headings that are constructed on a single line.
+This is because the regular expression used to match headings only looks for the start and end tags of a heading element on the same line.
+
+```markdown
+# Heading
+```
+
+```html
+<h1>Heading</h1>
+```
+
+Headings that span multiple lines, such as the one shown in the example below, will not be recognized by the plugin because the start and end tags are not on the same line.
+This means that the regular expression will not match the heading, and it will not be included in the list of headings displayed in the popup window.
+
+```html
+<h1>
+    Heading
+</h1>
+```
+
+I understand that this limitation may be frustrating, and I apologize for the inconvenience.
+I am open to considering adding support for headings that span multiple lines in the future.
+If you would like to see this feature implemented, please feel free to submit a pull request or open an issue on the plugin's GitHub repository.
+Your contributions are always welcome and appreciated 😀!
+
 ## Installation
 
 ### Using [Packer](https://github.com/wbthomason/packer.nvim)
