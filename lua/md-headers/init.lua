@@ -3,10 +3,9 @@ local popup = require("plenary.popup")
 local M = {}
 local headers = {}
 
-local md_match_regex = '^#+ '
-local md_level_regex = '^#+'
-local md_text_regex = '^#+ (.*)'
-local html_match_regex = '%s*<h(%d)[^>]*>(.-)</h%d>%s*$'
+local md_match_regex = '^#+ '                              -- Match markdown headers.
+local md_extract_regex = '^(#+) (.*)'                      -- Extract markdown headers text and level.
+local html_match_regex = '%s*<h(%d)[^>]*>(.-)</h%d>%s*$'   -- Match html headers and extract level and text.
 
 -- Scan the current buffer for headers.
 -- This includes Markdown and HTML headers.
@@ -27,14 +26,16 @@ local function find_headers(buffer)
         -- Check if the line is a markdown header.
         local level = 0
         local text = ''
-        if line:match("^#+ ") then
+        if line:match(md_match_regex) then
             -- Extract the heading text and the number of # characters.
-            level, text = line:match("^(#+) (.*)")
+            level, text = line:match(md_extract_regex)
             level = #level
+            print(level, text)
         -- Check if the line is an HTML header.
-        elseif line:match("%s*<h(%d)[^>]*>(.-)</h%d>%s*$") then
+        elseif line:match(html_match_regex) then
             -- Extract the heading text and the header level.
-            level, text = line:match("<h(%d)[^>]*>(.-)</h%d>")
+            level, text = line:match(html_match_regex)
+            print(level, text)
         end
 
         -- Add the header to the headers table.
@@ -57,7 +58,7 @@ local function get_closest_header_above(buffer)
         local current_line = vim.api.nvim_buf_get_lines(buffer, i, i+1, false)[1]
 
         -- If it's a Markdown header.
-        if string.match(current_line, "^#+") or string.match(current_line, "%s*<h(%d)[^>]*>(.-)</h%d>%s*$")then
+        if string.match(current_line, md_match_regex) or string.match(current_line, html_match_regex)then
             popup_window_line = popup_window_line + 1
         end
     end
