@@ -123,7 +123,7 @@ You can customize the following settings:
 -   `height`: The height of the Markdown Headers popup window.
     -   For example, setting the height to '30' will result in the popup window being 30 lines high.
 -   `borderchars`: The character that will be used to draw the border around the popup window.
-    -   For example, setting the borderchars to '{ '', '', '', '', '', '', '', '' }' will result in the popup window being drawn with a border.
+    -   For example, setting the borderchars to '{ '', '', '', '', '', '', '', '' }' will result in the popup window being drawn without a border.
 
 If you do not configure Markdown Headers or leave certain settings unconfigured, it will use its default settings for those settings.
 
