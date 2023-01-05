@@ -74,15 +74,70 @@ Plug 'AntonVanAssche/md-headers.nvim'
 
 1. Clone this repository into your Neovim ~/.config/nvim/pack/plugins/start/directory.
 
+## Configuration
+
+You can configure the plugin by adding the following to your init.lua:
+
+### Configuring Markdown Headers in init.vim
+
+All the examples below are in lua. You can use the same examples in .vim files by wrapping them in lua heredoc like this:
+
+```vim
+lua << END
+    require('md-headers').setup()
+END
+```
+
+### Configuring Markdown Headers in init.lua
+
+Here is an example of how you can configure the plugin in your init.lua file.
+The example below shows the default configuration, which you can customize by modifying the values of the different settings.
+
+```lua
+local md_headers_status_ok, md_headers = pcall(require, 'md-headers')
+if not md_headers_status_ok then
+    return
+end
+
+-- Configure the popup window settings.
+md_headers.setup {
+    width = 60,
+    height = 10,
+    borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'}
+}
+
+-- Shorten function name.
+local keymap = vim.keymap.set
+-- Silent keymap option.
+local opts = { silent = true }
+
+-- Set keymap.
+keymap('n', '<leader>mdh', ':MarkdownHeaders<CR>', opts)
+keymap('n', '<leader>mdhc', ':MarkdownHeadersClosest<CR>', opts)
+```
+
+You can customize the following settings:
+
+-   `width`: The width of the Markdown Headers popup window.
+    -   For example, setting the width to '100' will result in the popup window being 100 columns wide.
+-   `height`: The height of the Markdown Headers popup window.
+    -   For example, setting the height to '30' will result in the popup window being 30 lines high.
+-   `borderchars`: The character that will be used to draw the border around the popup window.
+    -   For example, setting the borderchars to '{ '', '', '', '', '', '', '', '' }' will result in the popup window being drawn with a border.
+
+If you do not configure Markdown Headers or leave certain settings unconfigured, it will use its default settings for those settings.
+
+**NOTE**: This will start Markdown Headers with it's default configuration (refer to the header above).
+
 ## Usage
 
-To use the Markdown Headers plugin, use the ':MarkdownHeaders' command to display a list of headings in the current buffer in a floating window.
+To use the Markdown Headers plugin, use the `:MarkdownHeaders` command to display a list of headings in the current buffer in a floating window.
 The headings will include both Markdown and HTML headings.
 You can navigate to a heading by pressing Enter on it, and the cursor will move to the corresponding heading in the main window.
 You can also press Escape or q to close the window.
 The window will also close automatically when you've selected a heading.
 
-To start the plugin with the cursor already positioned on the closest heading, use the ':MarkdownHeadersClosest' command instead.
+To start the plugin with the cursor already positioned on the closest heading, use the `:MarkdownHeadersClosest` command instead.
 
 Examples:
 
