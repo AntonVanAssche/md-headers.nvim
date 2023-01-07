@@ -38,7 +38,7 @@ This means that the regular expression will not match the heading, and it will n
 
 I understand that this limitation may be frustrating, and I apologize for the inconvenience.
 I am open to considering adding support for headings that span multiple lines in the future.
-If you would like to see this feature implemented, please feel free to submit a pull request or open an issue on the plugin's GitHub repository.
+If you would like to see this feature implemented, please feel free to submit a pull request or open an issue.
 Your contributions are always welcome and appreciated 😀!
 
 ## Installation
@@ -153,3 +153,9 @@ Markdown Headers is licensed under the MIT License. See the [LICENSE.md](./LICEN
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue for any bugs or feature requests.
+
+## TODO
+
+-   [ ] Support headings that are spread across multiple lines.
+    -   HTML only.
+-   [ ] To be continued...
