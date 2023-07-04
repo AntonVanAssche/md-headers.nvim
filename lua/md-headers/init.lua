@@ -14,41 +14,72 @@ local settings = {
     borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'}
 }
 
+-- Tree-sitter query to find Markdown headings.
+local md_headings = vim.treesitter.query.parse(
+    "markdown",
+    [[
+(atx_heading) @heading
+]]
+)
+
+local function get_root(bufnr)
+    local parser = vim .treesitter.get_parser(bufnr, "markdown", {})
+    if parser then
+        local root = parser:parse()[1]
+        return root:root()
+    end
+end
+
 -- Scan the current buffer for headers.
 -- This includes Markdown and HTML headers.
 -- Once a header is found, it is added to the headers table
 -- and will be indented with spaces according to its level.
 -- @param buffer: The buffer to scan.
 local function find_headers(buffer)
-    -- Clear the headers table.
     headers = {}
 
-    -- Get the number of lines in the buffer.
-    local line_count = vim.api.nvim_buf_line_count(buffer)
+    local root = get_root(buffer)
 
-    -- Iterate through the lines in the buffer.
-    for i = 0, line_count - 1 do
-        -- Get the current line.
-        local line = vim.api.nvim_buf_get_lines(buffer, i, i+1, false)[1]
+    for id, node in md_headings:iter_captures(root, buffer, 0, -1) do
+        local name = md_headings.captures[id]
 
-        -- Check if the line is a markdown header.
-        local level = 0
-        local text = ''
-        if line:match(md_match_regex) then
-            -- Extract the heading text and the number of # characters.
-            level, text = line:match(md_extract_regex)
+        if name == "heading" then
+            local range = { node:range() }
+            local text = vim.api.nvim_buf_get_lines(buffer, range[1], range[3], false)[1]
+            local level = 0
+            level, text = text:match(md_extract_regex)
             level = #level
-        -- Check if the line is an HTML header.
-        elseif line:match(html_match_regex) then
-            -- Extract the heading text and the header level.
-            level, text = line:match(html_match_regex)
-        end
 
-        -- Add the header to the headers table.
-        if tonumber(level) > 0 then
-            table.insert(headers, {line = i, text = string.rep(" ", level - 1) .. text})
+            if tonumber(level) > 0 then
+                table.insert(headers, {line = range[1], text = string.rep(" ", level - 1) .. text})
+            end
         end
     end
+
+    -- local line_count = vim.api.nvim_buf_line_count(buffer)
+    -- -- Iterate through the lines in the buffer.
+    -- for i = 0, line_count - 1 do
+    --     -- Get the current line.
+    --     local line = vim.api.nvim_buf_get_lines(buffer, i, i+1, false)[1]
+    --
+    --     -- Check if the line is a markdown header.
+    --     local level = 0
+    --     local text = ''
+    --     if line:match(md_match_regex) then
+    --         -- Extract the heading text and the number of # characters.
+    --         level, text = line:match(md_extract_regex)
+    --         level = #level
+    --     -- Check if the line is an HTML header.
+    --     elseif line:match(html_match_regex) then
+    --         -- Extract the heading text and the header level.
+    --         level, text = line:match(html_match_regex)
+    --     end
+    --
+    --     -- Add the header to the headers table.
+    --     if tonumber(level) > 0 then
+    --         table.insert(headers, {line = i, text = string.rep(" ", level - 1) .. text})
+    --     end
+    -- end
 end
 
 -- Gets the closest header above the current cursor position.
