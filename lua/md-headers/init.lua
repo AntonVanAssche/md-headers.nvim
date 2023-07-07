@@ -22,6 +22,15 @@ local md_headings = vim.treesitter.query.parse(
 ]]
 )
 
+local html_headings = vim.treesitter.query.parse(
+    "html",
+    [[
+(start_tag
+    (tag_name) @name (#match? @name "^h[1-9]")
+)
+]]
+)
+
 local function get_root(bufnr)
     local parser = vim .treesitter.get_parser(bufnr, "markdown", {})
     if parser then
@@ -91,13 +100,20 @@ local function get_closest_header_above(buffer)
     local line = vim.api.nvim_win_get_cursor(0)[1]
 
     local popup_window_line = 0
+    local root = get_root(buffer)
 
-    for i = 0, line do
-        local current_line = vim.api.nvim_buf_get_lines(buffer, i, i+1, false)[1]
+    for id, node in md_headings:iter_captures(root, buffer, 0, -1) do
+        local name = md_headings.captures[id]
 
-        -- If it's a Markdown header.
-        if string.match(current_line, md_match_regex) or string.match(current_line, html_match_regex)then
-            popup_window_line = popup_window_line + 1
+        if name == "heading" then
+            -- Get distance between the current line and the header.
+            local range = { node:range() }
+            local distance = line - range[1]
+
+            -- If the header is above the current line, return it.
+            if distance > 0 then
+                popup_window_line = popup_window_line + 1
+            end
         end
     end
 
