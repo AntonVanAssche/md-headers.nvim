@@ -31,6 +31,11 @@ local html_headings = vim.treesitter.query.parse(
 ]]
 )
 
+local sort_by_line = function(t)
+    table.sort(t, function(a, b) return a.line < b.line end)
+    return t
+end
+
 local function get_root(bufnr)
     local parser = vim .treesitter.get_parser(bufnr, "markdown", {})
     if parser then
