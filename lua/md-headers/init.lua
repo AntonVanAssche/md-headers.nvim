@@ -15,7 +15,7 @@ local settings = {
 }
 
 -- Tree-sitter query to find Markdown headings.
-local md_headings = vim.treesitter.query.parse(
+local md_query = vim.treesitter.query.parse(
     "markdown",
     [[
 (atx_heading) @heading
@@ -54,8 +54,8 @@ local function find_headers(buffer)
 
     local root = get_root(buffer)
 
-    for id, node in md_headings:iter_captures(root, buffer, 0, -1) do
-        local name = md_headings.captures[id]
+    for id, node in md_query:iter_captures(root, buffer, 0, -1) do
+        local name = md_query .captures[id]
 
         if name == "heading" then
             local range = { node:range() }
@@ -107,8 +107,8 @@ local function get_closest_header_above(buffer)
     local popup_window_line = 0
     local root = get_root(buffer)
 
-    for id, node in md_headings:iter_captures(root, buffer, 0, -1) do
-        local name = md_headings.captures[id]
+    for id, node in md_query:iter_captures(root, buffer, 0, -1) do
+        local name = md_query.captures[id]
 
         if name == "heading" then
             -- Get distance between the current line and the header.
