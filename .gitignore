@@ -40,3 +40,5 @@ luac.out
 *.hex
 
 .luarc.json
+
+tags
