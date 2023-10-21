@@ -89,6 +89,7 @@ local function open_header_window(closest_header)
     local _, window = popup.create(buffer, {
         title = "Markdown Headers",
         highlight = "MarkdownHeadersWindow",
+        titlehighlight = 'MarkdownHeadersTitle',
         line = math.floor(((vim.o.lines - height) / 2) - 1),
         col = math.floor((vim.o.columns - width) / 2),
         minwidth = width,
