@@ -127,7 +127,7 @@ You can customize the following settings:
 
 If you do not configure Markdown Headers or leave certain settings unconfigured, it will use its default settings for those settings.
 
-The color of both the border and the title can be changed independently. This can be done by changing the highlight color of the element, either manually or by configuring it in the configuration file, as shown below.
+The text, border, and title colors can be independently customized by adjusting their highlight colors. This can be achieved through either manual changes or configuration file settings, as demonstrated below:
 
 1.  Using the configuration file to change the highlight colors:
 
@@ -144,6 +144,9 @@ end
 2. Manually change the highlight colors:
     - Title: `highlight MarkdownHeadersTitle guifg=#61afef`
     - Border: `highlight MarkdownHeadersBorder guifg=#61afef`
+    - Text: `highlight MarkdownHeadersWindow guifg=#61afef`
+
+This enables users to have fine-grained control over the visual appearance of the text, border, and title according to their preferences/needs.
 
 ## Usage
 
