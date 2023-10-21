@@ -12,7 +12,7 @@ Markdown Headers is a simple/basic Neovim plugin that allows you to easily navig
 -   It can improve your productivity and efficiency when writing or editing markdown documents.
 
 There are probably plenty of other plugins that do the exact same thing and are probably nicer to look at 😅, feel free to use them.
-I only made this plugin to learn a bit more about the Neovim API and for **FUN** 😉.
+I only created this plugin just to make navigating my college course summaries a little easier and to learn a thing or two about the Neovim API 😉.
 
 ## Limitations
 
@@ -37,9 +37,10 @@ This means that the regular expression will not match the heading, and it will n
 ```
 
 I understand that this limitation may be frustrating, and I apologize for the inconvenience.
-I am open to considering adding support for headings that span multiple lines in the future.
-If you would like to see this feature implemented, please feel free to submit a pull request or open an issue.
-Your contributions are always welcome and appreciated 😀!
+Since this is a known and reported bug, please do not report it.
+If reported, the issue will be closed and marked as `duplicate`.
+This limitation is currently worked on, see pull request [#4](https://github.com/AntonVanAssche/md-headers.nvim/pull/4).
+But I'm stuck on the implementation to detect html headings.
 
 ## Installation
 
