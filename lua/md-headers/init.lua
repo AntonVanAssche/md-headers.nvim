@@ -106,7 +106,7 @@ local function get_closest_header_above(buffer)
     for id, node in md_query:iter_captures(root, buffer, 0, -1) do
         local name = md_query.captures[id]
 
-        if name == "heading" then
+        if name == "md_heading" then
             -- Get distance between the current line and the header.
             local range = { node:range() }
             local distance = line - range[1]
