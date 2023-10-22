@@ -128,7 +128,26 @@ You can customize the following settings:
 
 If you do not configure Markdown Headers or leave certain settings unconfigured, it will use its default settings for those settings.
 
-**NOTE**: This will start Markdown Headers with it's default configuration (refer to the header above).
+The text, border, and title colors can be independently customized by adjusting their highlight colors. This can be achieved through either manual changes or configuration file settings, as demonstrated below:
+
+1.  Using the configuration file to change the highlight colors:
+
+```lua
+-- Change the border and title highlight color to '#61afef'.
+do
+    vim.cmd [[
+        highlight! MarkdownHeadersTitle guifg=#61afef
+        highlight! MarkdownHeadersBorder guifg=#61afef
+    ]]
+end
+```
+
+2. Manually change the highlight colors:
+    - Title: `highlight MarkdownHeadersTitle guifg=#61afef`
+    - Border: `highlight MarkdownHeadersBorder guifg=#61afef`
+    - Text: `highlight MarkdownHeadersWindow guifg=#61afef`
+
+This enables users to have fine-grained control over the visual appearance of the text, border, and title according to their preferences/needs.
 
 ## Usage
 
