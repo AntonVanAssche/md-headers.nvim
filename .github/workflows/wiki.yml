@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - enhance-wiki-docs-automation
     paths:
       - ".github/WIKI/**"
 
