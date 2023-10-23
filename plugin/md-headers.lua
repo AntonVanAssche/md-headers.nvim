@@ -9,7 +9,7 @@ vim .api.nvim_create_autocmd(
     'BufWinEnter', {
     pattern = {
         '*.md',
-        '*.rmd'
+        '*.[rR]md'
     },
     callback = function()
         vim.api.nvim_create_user_command('MarkdownHeaders', function()
@@ -22,7 +22,7 @@ vim .api.nvim_create_autocmd(
     'BufWinEnter', {
     pattern = {
         '*.md',
-        '*.rmd'
+        '*.[rR]md'
     },
     callback = function()
         vim.api.nvim_create_user_command('MarkdownHeadersClosest', function()
