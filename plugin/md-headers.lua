@@ -7,7 +7,10 @@ end
 -- containing a Markdown file.
 vim .api.nvim_create_autocmd(
     'BufWinEnter', {
-    pattern = '*.md',
+    pattern = {
+        '*.md',
+        '*.[rR]md'
+    },
     callback = function()
         vim.api.nvim_create_user_command('MarkdownHeaders', function()
             require('md-headers').markdown_headers(false)
@@ -17,7 +20,10 @@ vim .api.nvim_create_autocmd(
 
 vim .api.nvim_create_autocmd(
     'BufWinEnter', {
-    pattern = '*.md',
+    pattern = {
+        '*.md',
+        '*.[rR]md'
+    },
     callback = function()
         vim.api.nvim_create_user_command('MarkdownHeadersClosest', function()
             require('md-headers').markdown_headers(true)
