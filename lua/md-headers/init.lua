@@ -3,16 +3,49 @@ local popup = require("plenary.popup")
 local M = {}
 local headers = {}
 
-local md_match_regex = '^#+ '                              -- Match markdown headers.
-local md_extract_regex = '^(#+) (.*)'                      -- Extract markdown headers text and level.
-local html_match_regex = '%s*<h(%d)[^>]*>(.-)</h%d>%s*$'   -- Match html headers and extract level and text.
+local md_extract_regex = "^(#+) (.*)"
 
 -- Default options for the floating window.
 local settings = {
     width = 60,
     height = 10,
-    borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'}
+    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
 }
+
+local md_query = vim.treesitter.query.parse(
+    "markdown",
+    [[
+(atx_heading) @md_heading
+]]
+)
+
+local html_query = vim.treesitter.query.parse(
+    "html",
+    [[
+(element
+  (start_tag
+    (tag_name) @html_heading (#match? @html_heading "^h[1-9]"))
+  (text) @tag_text
+  (end_tag
+    (tag_name) @end_html_heading (#match? @end_html_heading "^h[1-9]"))
+)
+]]
+)
+
+local sort_by_line = function(t)
+    table.sort(t, function(a, b)
+        return a.line < b.line
+    end)
+    return t
+end
+
+local function get_root(bufnr, lang)
+    local parser = vim.treesitter.get_parser(bufnr, lang, {})
+    if parser then
+        local root = parser:parse()[1]
+        return root:root()
+    end
+end
 
 -- Scan the current buffer for headers.
 -- This includes Markdown and HTML headers.
@@ -20,35 +53,52 @@ local settings = {
 -- and will be indented with spaces according to its level.
 -- @param buffer: The buffer to scan.
 local function find_headers(buffer)
-    -- Clear the headers table.
     headers = {}
 
-    -- Get the number of lines in the buffer.
-    local line_count = vim.api.nvim_buf_line_count(buffer)
+    local root_md = get_root(buffer, "markdown")
+    local root_html = get_root(buffer, "html")
 
-    -- Iterate through the lines in the buffer.
-    for i = 0, line_count - 1 do
-        -- Get the current line.
-        local line = vim.api.nvim_buf_get_lines(buffer, i, i+1, false)[1]
+    for id, node in md_query:iter_captures(root_md, buffer, 0, -1) do
+        local name = md_query.captures[id]
 
-        -- Check if the line is a markdown header.
-        local level = 0
-        local text = ''
-        if line:match(md_match_regex) then
-            -- Extract the heading text and the number of # characters.
-            level, text = line:match(md_extract_regex)
+        if name == "md_heading" then
+            local range = { node:range() }
+            local text = vim.api.nvim_buf_get_lines(buffer, range[1], range[3], false)[1]
+            local level = 0
+            level, text = text:match(md_extract_regex)
             level = #level
-        -- Check if the line is an HTML header.
-        elseif line:match(html_match_regex) then
-            -- Extract the heading text and the header level.
-            level, text = line:match(html_match_regex)
-        end
 
-        -- Add the header to the headers table.
-        if tonumber(level) > 0 then
-            table.insert(headers, {line = i, text = string.rep(" ", level - 1) .. text})
+            if tonumber(level) > 0 then
+                table.insert(headers, { line = range[1], text = string.rep(" ", level - 1) .. text })
+            end
         end
     end
+
+    local _level
+
+    for id, node in html_query:iter_captures(root_html, buffer, 0, -1) do
+        local name = html_query.captures[id]
+
+        if name == "html_heading" then
+            local range = { node:range() }
+            local text = vim.api.nvim_buf_get_lines(buffer, range[1], range[3] + 1, false)[1]
+            text = string.sub(text, range[2] + 1, range[4])
+            local level = tonumber(text:match("h([1-9])"))
+            _level = level
+        end
+
+        if name == "tag_text" then
+            local range = { node:range() }
+            local text = vim.api.nvim_buf_get_lines(buffer, range[1], range[3] + 1, false)[1]
+            text = string.sub(text, range[2] + 1, range[4])
+
+            if _level > 0 then
+                table.insert(headers, { line = range[1], text = string.rep(" ", _level - 1) .. text })
+            end
+        end
+    end
+
+    return sort_by_line(headers)
 end
 
 -- Gets the closest header above the current cursor position.
@@ -56,17 +106,21 @@ end
 -- @param buffer The buffer to search for headers.
 -- @return popup_window_line: number
 local function get_closest_header_above(buffer)
-    -- Get the current line.
     local line = vim.api.nvim_win_get_cursor(0)[1]
 
     local popup_window_line = 0
+    local root = get_root(buffer)
 
-    for i = 0, line do
-        local current_line = vim.api.nvim_buf_get_lines(buffer, i, i+1, false)[1]
+    for id, node in md_query:iter_captures(root, buffer, 0, -1) do
+        local name = md_query.captures[id]
 
-        -- If it's a Markdown header.
-        if string.match(current_line, md_match_regex) or string.match(current_line, html_match_regex)then
-            popup_window_line = popup_window_line + 1
+        if name == "md_heading" then
+            local range = { node:range() }
+            local distance = line - range[1]
+
+            if distance > 0 then
+                popup_window_line = popup_window_line + 1
+            end
         end
     end
 
@@ -77,7 +131,6 @@ end
 -- The buffer itself is not modifiable.
 -- @param closest_header: Line number of the closest header inside the popup window.
 local function open_header_window(closest_header)
-    -- Create a new buffer.
     local buffer = vim.api.nvim_create_buf(false, true)
 
     local width = settings.width
@@ -98,67 +151,48 @@ local function open_header_window(closest_header)
         borderchars = borderchars,
     })
 
-    -- Set the buffer options.
     vim.api.nvim_win_set_option(
         window.border.win_id,
         "winhl",
         "Normal:MarkdownHeadersBorder"
     )
 
-    -- Add the headers to the new buffer.
     local contents = {}
     for _, header in ipairs(headers) do
         table.insert(contents, header.text)
     end
 
-    -- Set the contents of the new buffer.
     vim.api.nvim_buf_set_lines(buffer, 0, #contents, false, contents)
-
-    -- Make the buffer read-only.
     vim.api.nvim_buf_set_option(buffer, "modifiable", false)
-
-    -- Make the buffer the current buffer.
     vim.api.nvim_set_current_buf(buffer)
-
-    -- Set the cursor to the closest header.
-    vim.api.nvim_win_set_cursor(window.win_id, {closest_header, 0})
+    vim.api.nvim_win_set_cursor(window.win_id, { closest_header, 0 })
 end
 
 -- Close the buffer with the headers and navigate to the selected header.
 -- @param index: Index of the selected header inside the headers table.
 local function goto_header(index)
-    -- Get the current window.
     local win = vim.api.nvim_get_current_win()
 
-    -- Close the header window.
     vim.api.nvim_win_close(win, true)
-
-    -- Go to the line of the selected header.
-    vim.api.nvim_win_set_cursor(0, {headers[index].line + 1, 0})
+    vim.api.nvim_win_set_cursor(0, { headers[index].line + 1, 0 })
 end
 
 -- Select a header from the header window and navigate to it.
 M.select_header = function()
-    -- Get the current line.
     local line = vim.api.nvim_win_get_cursor(0)[1]
 
-    -- Go to the selected header.
     goto_header(line)
 end
 
 M.close_header_window = function()
-    -- Get the current window.
     local win = vim.api.nvim_get_current_win()
 
-    -- Close the header window.
     vim.api.nvim_win_close(win, true)
 end
 
 M.markdown_headers = function(start_on_closest)
-    -- Get the current buffer.
     local buffer = vim.api.nvim_get_current_buf()
 
-    -- Find the headers in the current buffer.
     find_headers(buffer)
 
     local closest_header = nil
@@ -170,19 +204,35 @@ M.markdown_headers = function(start_on_closest)
         closest_header = 1
     end
 
-    -- Open the header window.
     open_header_window(closest_header)
 
-    -- Set the window settings.
     vim.api.nvim_win_set_option(0, "number", false)
     vim.api.nvim_win_set_option(0, "relativenumber", false)
     vim.api.nvim_win_set_option(0, "cursorline", false)
 
     -- Map the enter key to select the header.
     -- Map q and escape to close the window.
-    vim.api.nvim_buf_set_keymap(0, 'n', '<CR>', ':lua require("md-headers").select_header()<CR>', {noremap = true, silent = true})
-    vim.api.nvim_buf_set_keymap(0, 'n', 'q', ':lua require("md-headers").close_header_window()<CR>', {noremap = true, silent = true})
-    vim.api.nvim_buf_set_keymap(0, 'n', '<Esc>', ':lua require("md-headers").close_header_window()<CR>', {noremap = true, silent = true})
+    vim.api.nvim_buf_set_keymap(
+        0,
+        "n",
+        "<CR>",
+        ':lua require("md-headers").select_header()<CR>',
+        { noremap = true, silent = true }
+    )
+    vim.api.nvim_buf_set_keymap(
+        0,
+        "n",
+        "q",
+        ':lua require("md-headers").close_header_window()<CR>',
+        { noremap = true, silent = true }
+    )
+    vim.api.nvim_buf_set_keymap(
+        0,
+        "n",
+        "<Esc>",
+        ':lua require("md-headers").close_header_window()<CR>',
+        { noremap = true, silent = true }
+    )
 end
 
 -- Set the settings, if any where passed.
