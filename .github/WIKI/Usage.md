@@ -1,8 +1,16 @@
 To utilize the Markdown Headers plugin, follow these instructions for efficient navigation within Neovim.
 
-# 1. Displaying Headings
+# 1. Commands
 
-To use the Markdown Headers plugin, execute the `:MarkdownHeaders` command. This command triggers a floating window that displays a list of headings in the current buffer. The list includes both Markdown and HTML headings.
+To utilize the Markdown Headers plugin for efficient navigation within Neovim, follow these instructions:
+
+## 1.1 MarkdownHeaders
+
+Execute the `:MarkdownHeaders` command to trigger a floating window displaying a list of headings in the current buffer. This list includes both Markdown and HTML headings.
+
+## 1.2 MarkdownHeadersClosest
+
+For enhanced and precise navigation, activate the plugin with the cursor preemptively placed at the current heading using the `:MarkdownHeadersClosest` command. This functionality facilitates focused navigation within the Markdown file, aligning the cursor with the specific heading you are actively editing.
 
 # 2. Navigation
 
@@ -28,11 +36,7 @@ keymap('n', '<leader>mdh', ':MarkdownHeaders<CR>', opts)
 keymap('n', '<leader>mdhc', ':MarkdownHeadersClosest<CR>', opts)
 ```
 
-# 4. Starting with the Cursor on the Closest Heading
-
-For more targeted navigation, initiate the plugin with the cursor already positioned on the closest heading using the `:MarkdownHeadersClosest` command.
-
-# 5. Examples
+# 4. Examples
 
 Execute the following commands to interact with the plugin:
 
