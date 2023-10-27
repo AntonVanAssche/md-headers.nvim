@@ -1,22 +1,29 @@
 ---
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
+name: 🐛 Bug report
+about: Create a report to help us fix any bugs
+title: 'Bug: '
+labels: 'bug'
 assignees: ''
-
 ---
 
-**(1) Issue/Bug Description:**
+<!--
+    For more information about writing a good bug report,
+    checkout the contributing guidelines (https://github.com/AntonVanAssche/md-headers.nvim/blob/master/CONTRIBUTING.md)
+-->
 
+**Issue/Bug Description:**
 
-**(2) Steps to reproduce (if you know):**
+**Steps to Reproduce:**
 
+**Expected Behavior:**
 
-**(3) Expected behavior:**
+1. ...
+2. ...
 
+**Actual Behavior:**
 
-**(4) Actual behavior:**
+1. ...
+2. ...
 
+**Additional context:**
 
-**(5) Notes:**
