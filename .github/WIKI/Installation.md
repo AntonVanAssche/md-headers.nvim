@@ -50,4 +50,4 @@ return {
 
 # 3. Lazy Loading
 
-t's not recommended to lazy load Markdown Headers. The plugin isn't resource-expensive, performing minimal validation and configuration setting. There's no performance benefit from lazy loading.
+It's not recommended to lazy load Markdown Headers. The plugin isn't resource-expensive, performing minimal validation and configuration setting. There's no performance benefit from lazy loading.
