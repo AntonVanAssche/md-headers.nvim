@@ -20,10 +20,10 @@
         <a href="https://github.com/AntonVanAssche/md-headers.nvim/network/members">
             <img src="https://img.shields.io/github/forks/AntonVanAssche/md-headers.nvim.svg?style=for-the-badge">
         </a>
-        <a href="https://github.com/github_username/AntonVanAssche/md-headers.nvim">
+        <a href="https://github.com/ntonVanAssche/md-headers.nvim">
             <img src="https://img.shields.io/github/stars/AntonVanAssche/md-headers.nvim.svg?style=for-the-badge">
         </a>
-        <a href="https://github.com/github_username/AntonVanAssche/md-headers.nvim">
+        <a href="https://github.com/AntonVanAssche/md-headers.nvim">
             <img src="https://img.shields.io/github/issues/AntonVanAssche/md-headers.nvim.svg?style=for-the-badge">
         </a>
         <a href="https://github.com/AntonVanAssche/md-headers.nvim/blob/master/LICENSE">
