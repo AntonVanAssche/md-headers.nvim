@@ -1,5 +1,3 @@
-
-
 This page provides instructions on how to configure the Markdown Headers plugin according to your preferences. You can customize various settings to tailor the plugin to your specific needs.
 
 # 1. Initialization in init.vim
@@ -26,9 +24,9 @@ end
 md_headers.setup {
     width = 60,
     height = 10,
-    borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'}
+    borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},
+    popup_auto_close = true
 }
-
 -- Shorten function name.
 local keymap = vim.keymap.set
 -- Silent keymap option.
@@ -43,12 +41,33 @@ keymap('n', '<leader>mdhc', ':MarkdownHeadersClosest<CR>', opts)
 
 You can customize the following settings:
 
--   `width`: The width of the Markdown Headers popup window.
-    -   Example: Setting the width to '100' makes the popup window 100 columns wide.
--   `height`: The height of the Markdown Headers popup window.
-    -   Example: Setting the height to '30' results in a popup window that is 30 lines high.
--   `borderchars`: The characters used to draw the border around the popup window.
-    -   Example: Setting borderchars to `{ '', '', '', '', '', '', '', '' }` results in a borderless popup window.
+## 3.1 Width
+
+You can customize the width of the Markdown Headers popup window using the `width` setting.
+
+-   **Format:** Numeric
+-   **Example:** Setting the width to '100' makes the popup window 100 columns wide.
+
+## 3.2 Height
+
+Adjust the height of the Markdown Headers popup window with the `height` setting.
+
+-   **Format:** Numeric
+-   **Example:** Setting the height to '30' results in a popup window that is 30 lines high.
+
+## 3.3 Border Characters
+
+Customize the characters used to draw the border around the popup window using the `borderchars` setting.
+
+-   **Format:** Array of eight strings
+-   **Example:** Setting borderchars to ``{ '', '', '', '', '', '', '', '' }`` results in a borderless popup window.
+
+## 3.4 Popup Auto-Close
+
+Specify whether the popup window should automatically close after selecting a heading using the `popup_auto_close` setting.
+
+-   **Format:** Boolean (true or false)
+-   **Example:** Setting `popup_auto_close` to false will **NOT** automatically close the popup window after selecting a heading.
 
 # 4. Default Settings
 

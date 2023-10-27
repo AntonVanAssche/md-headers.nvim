@@ -10,6 +10,7 @@ local settings = {
     width = 60,
     height = 10,
     borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+    popup_auto_close = true -- or false
 }
 
 local md_query = vim.treesitter.query.parse(
@@ -103,24 +104,14 @@ end
 
 -- Gets the closest header above the current cursor position.
 -- Returns the corresponding line inside the popup window.
--- @param buffer The buffer to search for headers.
 -- @return popup_window_line: number
-local function get_closest_header_above(buffer)
+local function get_closest_header_above()
     local line = vim.api.nvim_win_get_cursor(0)[1]
-
     local popup_window_line = 0
-    local root = get_root(buffer)
 
-    for id, node in md_query:iter_captures(root, buffer, 0, -1) do
-        local name = md_query.captures[id]
-
-        if name == "md_heading" then
-            local range = { node:range() }
-            local distance = line - range[1]
-
-            if distance > 0 then
-                popup_window_line = popup_window_line + 1
-            end
+    for _, header in ipairs(headers) do
+        if header.line < line then
+            popup_window_line = popup_window_line + 1
         end
     end
 
@@ -129,8 +120,8 @@ end
 
 -- Open a popup window with the headers of the current buffer.
 -- The buffer itself is not modifiable.
--- @param closest_header: Line number of the closest header inside the popup window.
-local function open_header_window(closest_header)
+-- @param header_to_start_on: Line number of the header to set the cursor on, inside the popup window.
+local function open_header_window(header_to_start_on)
     local buffer = vim.api.nvim_create_buf(false, true)
 
     local width = settings.width
@@ -165,16 +156,21 @@ local function open_header_window(closest_header)
     vim.api.nvim_buf_set_lines(buffer, 0, #contents, false, contents)
     vim.api.nvim_buf_set_option(buffer, "modifiable", false)
     vim.api.nvim_set_current_buf(buffer)
-    vim.api.nvim_win_set_cursor(window.win_id, { closest_header, 0 })
+    vim.api.nvim_win_set_cursor(window.win_id, { header_to_start_on, 0 })
 end
 
 -- Close the buffer with the headers and navigate to the selected header.
 -- @param index: Index of the selected header inside the headers table.
 local function goto_header(index)
     local win = vim.api.nvim_get_current_win()
+    local popup_auto_close = settings.popup_auto_close
 
     vim.api.nvim_win_close(win, true)
     vim.api.nvim_win_set_cursor(0, { headers[index].line + 1, 0 })
+
+    if not popup_auto_close then
+        M.markdown_headers(true)
+    end
 end
 
 -- Select a header from the header window and navigate to it.
@@ -195,16 +191,14 @@ M.markdown_headers = function(start_on_closest)
 
     find_headers(buffer)
 
-    local closest_header = nil
+    local header_to_start_on = nil
     if start_on_closest then
-        -- Get the closest header to the current cursor position.
-        -- In other words, the header above the current cursor.
-        closest_header = get_closest_header_above(buffer)
+        header_to_start_on = get_closest_header_above()
     else
-        closest_header = 1
+        header_to_start_on = 1
     end
 
-    open_header_window(closest_header)
+    open_header_window(header_to_start_on)
 
     vim.api.nvim_win_set_option(0, "number", false)
     vim.api.nvim_win_set_option(0, "relativenumber", false)
