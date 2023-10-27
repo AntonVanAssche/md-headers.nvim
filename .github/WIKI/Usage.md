@@ -19,7 +19,7 @@ Navigate through the headings using the following keybindings:
 -   Press `Enter` on a heading to move the cursor to the corresponding heading in the main window.
 -   Press `Escape` or `q` to close the floating window.
 
-The window will also close automatically once you've selected a heading, optimizing your workflow.
+The popup window is designed to automatically close upon selecting a heading, streamlining your workflow. However, this behavior changes when the `popup_auto_close` option is configured as `false` in your settings file, preventing automatic closure. Refer to the [configuration](https://github.com/AntonVanAssche/md-headers.nvim/wiki/Configuration) page for additional details on this setting.
 
 # 3. Keybinding Recommendation
 
