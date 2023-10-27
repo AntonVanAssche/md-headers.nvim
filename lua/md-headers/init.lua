@@ -104,24 +104,14 @@ end
 
 -- Gets the closest header above the current cursor position.
 -- Returns the corresponding line inside the popup window.
--- @param buffer The buffer to search for headers.
 -- @return popup_window_line: number
-local function get_closest_header_above(buffer)
+local function get_closest_header_above()
     local line = vim.api.nvim_win_get_cursor(0)[1]
-
     local popup_window_line = 0
-    local root = get_root(buffer)
 
-    for id, node in md_query:iter_captures(root, buffer, 0, -1) do
-        local name = md_query.captures[id]
-
-        if name == "md_heading" then
-            local range = { node:range() }
-            local distance = line - range[1]
-
-            if distance > 0 then
-                popup_window_line = popup_window_line + 1
-            end
+    for _, header in ipairs(headers) do
+        if header.line < line then
+            popup_window_line = popup_window_line + 1
         end
     end
 
