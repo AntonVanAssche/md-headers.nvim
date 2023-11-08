@@ -33,8 +33,8 @@ local keymap = vim.keymap.set
 local opts = { silent = true }
 
 -- Set keymap.
-keymap('n', '<leader>mdh', ':MarkdownHeaders<CR>', opts)
-keymap('n', '<leader>mdhc', ':MarkdownHeadersClosest<CR>', opts)
+keymap('n', '<leader>mdh', '<cmd>MarkdownHeaders<CR>', opts)
+keymap('n', '<leader>mdhc', '<cmd>MarkdownHeadersClosest<CR>', opts)
 ```
 
 # 3. Customization Options
