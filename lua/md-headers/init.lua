@@ -231,6 +231,62 @@ M.markdown_headers = function(start_on_closest)
     )
 end
 
+local function create_node(text, level)
+    return {
+        value = text,
+        level = level,
+        children = {},
+        parent = nil
+    }
+end
+
+local function add_node(parent, child)
+    table.insert(parent.children, child)
+end
+
+local function build_linked_list()
+    local root = create_node(nil, 0)
+    local current_node = root
+
+    for _, header in ipairs(headers) do
+        local new_node = create_node(header.text, header.level)
+
+        while current_node ~= nil and current_node.level >= header.level do
+            current_node = current_node.parent
+        end
+
+        add_node(current_node, new_node)
+        new_node.parent = current_node
+        current_node = new_node
+    end
+
+    return root
+end
+
+local function generate_table_of_contents(node, depth, parent_number)
+    local entry_number = parent_number and parent_number .. "    " or ""
+
+    local toc_string = ""
+    if node.value then
+        toc_string = toc_string .. string.format("%s%s %s\n", entry_number, tostring(depth) .. ".", node.value)
+    end
+
+    for i, child in ipairs(node.children) do
+        toc_string = toc_string .. generate_table_of_contents(child, i, entry_number)
+    end
+
+    return toc_string
+end
+
+M.generate_table_of_contents = function()
+    local toc_linked_list = build_linked_list()
+    local toc_string = generate_table_of_contents(toc_linked_list, 0, nil)
+    local current_buffer = vim.api.nvim_get_current_buf()
+
+    local current_line = vim.api.nvim_win_get_cursor(0)[1]
+    vim.api.nvim_buf_set_lines(current_buffer, current_line - 1, current_line - 1, false, { toc_string })
+end
+
 -- Set the settings, if any where passed.
 -- If none are passed, the default settings will be used.
 -- @param opts: Plugin settings.
