@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2022 Anton van Assche
+Copyright (c) 2022-2024 Anton van Assche
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
