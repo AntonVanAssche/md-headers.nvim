@@ -43,7 +43,7 @@ return {
         'nvim-lua/plenary.nvim',
     },
     config = function()
-        require('nvim-tree').setup {}
+        require('md-headers').setup {}
     end,
 }
 ```
