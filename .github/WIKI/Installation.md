@@ -41,6 +41,7 @@ return {
     lazy = false,
     dependencies = {
         'nvim-lua/plenary.nvim',
+        'nvim-treesitter/nvim-treesitter',
     },
     config = function()
         require('md-headers').setup {}
