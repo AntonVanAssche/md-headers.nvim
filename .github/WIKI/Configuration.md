@@ -80,13 +80,11 @@ The text, border, and title colors can be independently customized through highl
 ## 5.1 Using the Configuration File
 
 ```lua
--- Change the border and title highlight color to '#61afef'.
-do
-    vim.cmd [[
-        highlight! MarkdownHeadersTitle guifg=#61afef
-        highlight! MarkdownHeadersBorder guifg=#61afef
-    ]]
-end
+-- Change the border foreground color to '#61afef', and the background color to '#202020'.
+vim.api.nvim_set_hl(0, "MarkdownHeadersBorder", { fg = "#61afef", bg = "#202020" })
+
+-- Change the border foreground color to '#61afef'.
+vim.api.nvim_set_hl(0, "MarkdownHeadersTitle", { fg = "#61afef" })
 ```
 
 ## 5.2 Manual Changes
