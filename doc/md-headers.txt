@@ -1,21 +1,96 @@
-================================================================================
-                                                             *MarkdownHeaders*
+*md-headers.txt*  Navigate between Mardown headings with ease from within Neovim.
+*MarkdownHeaders*
 
-This plugin helps you to easily navigate between headings in a Markdown file.
+License: MIT
+Author: Anton Van Assche <https://github.com/AntonVanAssche/>
 
-To use the Markdown Headers plugin, use the ':MarkdownHeaders' command to display a list of headings in the current buffer in a floating window.
-The headings will include both Markdown and HTML headings.
-You can navigate to a heading by pressing Enter on it, and the cursor will move to the corresponding heading in the main window.
-You can also press Escape or q to close the window.
-The window will also close automatically when you've selected a heading.
+===============================================================================
+CONTENTS                                                   *MarkdownHeaders-TOC*
 
-To start the plugin with the cursor already positioned on the closest heading, use the ':MarkdownHeadersClosest' command instead.
+    1. Commands.............|md-headers-commands|
+    2. Configuration........|md-headers-configuration|
+    3. Customization........|md-headers-customization|
 
-Examples:
+===============================================================================
+1. Commands                                            *MarkdownHeadersCommands*
+
+MarkdownHeaders                                               *:MarkdownHeaders*
+
+    Open the navigation window containing the headings within the current
+    buffer. Use `<CR>` to navigate to the selected heading, and `q` or `<Esc>`
+    to close the window.
+
+MarkdownHeadersClosest                                 *:MarkdownHeadersClosest*
+
+    Open the navigation window containing the headings within the current
+    buffer, but with the cursor on the heading you are currently at. To
+    navigate to the selected heading, use `<CR>`. Use `q` or `<Esc>` to close
+    the window.
+
+===============================================================================
+2. Configuration                                  *MarkdownHeadersConfiguration*
+
+    MarkdownHeaders can be configured by calling its `setup` function.
 
 >
-    MarkdownHeaders
-    MarkdownHeadersClosest
+    require("md-headers").setup {
+        width = 60,
+        height = 10,
+        borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},
+        popup_auto_close = true
+    }
 <
 
- vim:tw=78:ts=8:ft=help:norl:
+`width`:
+    Adjust the width of the Markdown Headers popup window using the `width`
+    setting.
+
+    For example, setting the width to '100' makes the popup window 100
+    columns wide.
+
+`height`:
+    Adjust the height of the Markdown Headers popup window with the `height`
+    setting.
+
+    For example, setting the height to '30' results in a popup window that
+    is 30 lines high.
+
+`borderchars`:
+    Customize the characters used to draw the border around the popup window
+    using the `borderchars` setting.
+
+    For example, setting borderchars to { '', '', '', '', '', '', '', '' }
+    results in a borderless popup window.
+
+`popup_auto_close`:
+    Specify whether the popup window should automatically close after
+    selecting a heading using the `popup_auto_close` setting.
+
+    For example, setting `popup_auto_close` to `false` will NOT automatically
+    close the popup window after selecting a heading.
+
+===============================================================================
+3. Customization                                  *MarkdownHeadersCustomization*
+
+    The following highlightgroups allow you to change the color of the
+    popup window.
+
+MarkdownHeadersTitle                                      *MarkdownHeadersTitle*
+
+>
+    highlight MarkdownHeadersTitle guifg=#61afef
+<
+
+MarkdownHeadersBorder                                    *MarkdownHeadersBorder*
+
+>
+    highlight MarkdownHeadersBorder guifg=#61afef
+<
+
+MarkdownHeadersWindow                                    *MarkdownHeadersWindow*
+
+>
+    highlight MarkdownHeadersWindow guifg=#61afef
+<
+===============================================================================
+vim:tw=78:ts=2:sts=2:sw=2:ft=help:norl:
