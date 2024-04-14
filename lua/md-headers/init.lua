@@ -10,7 +10,7 @@ local settings = {
     width = 60,
     height = 10,
     borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-    popup_auto_close = true -- or false
+    popup_auto_close = true, -- or false
 }
 
 local md_query = vim.treesitter.query.parse(
@@ -70,7 +70,10 @@ local function find_headers(buffer)
             level = #level
 
             if tonumber(level) > 0 then
-                table.insert(headers, { line = range[1], text = string.rep(" ", level - 1) .. text })
+                table.insert(
+                    headers,
+                    { line = range[1], text = string.rep(" ", level - 1) .. text }
+                )
             end
         end
     end
@@ -94,7 +97,10 @@ local function find_headers(buffer)
             text = string.sub(text, range[2] + 1, range[4])
 
             if _level > 0 then
-                table.insert(headers, { line = range[1], text = string.rep(" ", _level - 1) .. text })
+                table.insert(
+                    headers,
+                    { line = range[1], text = string.rep(" ", _level - 1) .. text }
+                )
             end
         end
     end
@@ -133,8 +139,8 @@ local function open_header_window(header_to_start_on)
     local _, window = popup.create(buffer, {
         title = "Markdown Headers",
         highlight = "MarkdownHeadersWindow",
-        titlehighlight = 'MarkdownHeadersTitle',
-        borderhighlight = 'MarkdownHeadersBorder',
+        titlehighlight = "MarkdownHeadersTitle",
+        borderhighlight = "MarkdownHeadersBorder",
         line = math.floor(((vim.o.lines - height) / 2) - 1),
         col = math.floor((vim.o.columns - width) / 2),
         minwidth = width,
@@ -142,11 +148,7 @@ local function open_header_window(header_to_start_on)
         borderchars = borderchars,
     })
 
-    vim.api.nvim_win_set_option(
-        window.border.win_id,
-        "winhl",
-        "Normal:MarkdownHeadersBorder"
-    )
+    vim.api.nvim_win_set_option(window.border.win_id, "winhl", "Normal:MarkdownHeadersBorder")
 
     local contents = {}
     for _, header in ipairs(headers) do
