@@ -5,7 +5,7 @@ end
 
 -- Assig the MarkdownHeaders command when entering a buffer
 -- containing a Markdown file.
-vim .api.nvim_create_autocmd(
+vim.api.nvim_create_autocmd(
     'BufWinEnter', {
     pattern = {
         '*.md',
@@ -19,7 +19,7 @@ vim .api.nvim_create_autocmd(
     end
 })
 
-vim .api.nvim_create_autocmd(
+vim.api.nvim_create_autocmd(
     'BufWinEnter', {
     pattern = {
         '*.md',
