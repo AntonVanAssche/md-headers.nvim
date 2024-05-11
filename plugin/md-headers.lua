@@ -3,7 +3,7 @@ if _G.loaded_md_headers then
     return
 end
 
--- Assig the MarkdownHeaders command when entering a buffer
+-- Assign the MarkdownHeaders command when entering a buffer
 -- containing a Markdown file.
 vim.api.nvim_create_autocmd(
     'BufWinEnter', {
