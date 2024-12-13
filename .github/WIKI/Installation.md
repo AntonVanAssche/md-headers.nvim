@@ -1,16 +1,21 @@
-This page provides instructions for installing the Markdown Headers plugin and its dependencies, ensuring you can seamlessly integrate and benefit from its features in Neovim.
+This page provides instructions for installing the Markdown Headers plugin and
+its dependencies, ensuring you can seamlessly integrate and benefit from its
+features in Neovim.
 
 # 1. Plugins
 
 The Markdown Headers plugin relies on the following dependencies:
 
--   [AntonVanAssche/md-headers](https://github.com/AntonVanAssche/md-headers.nvim)
--   [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
--   [nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) (Optional, see [4. Markdown language parser](#4-markdown-language-parser))
+- [AntonVanAssche/md-headers](https://github.com/AntonVanAssche/md-headers.nvim)
+- [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
+- [nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+  (Optional, see [4. Markdown language parser](#4-markdown-language-parser))
+
 # 2. Plugin Managers
 
+Choose your preferred plugin manager below to easily install the Markdown
+Headers plugin:
 
-Choose your preferred plugin manager below to easily install the Markdown Headers plugin:
 Please add unlisted plugin managers to this page.
 
 ## 2.1 [Packer](https://github.com/wbthomason/packer.nvim)
@@ -53,12 +58,26 @@ return {
 
 # 3. Lazy Loading
 
-It's not recommended to lazy load Markdown Headers. The plugin isn't resource-expensive, performing minimal validation and configuration setting. There's no performance benefit from lazy loading.
+It's not recommended to lazy load Markdown Headers. The plugin isn't
+resource-expensive, performing minimal validation and configuration setting.
+There's no performance benefit from lazy loading.
 
 # 4. Markdown language parser
 
-To ensure Markdown Headers function correctly, a language parser is necessary. Neovim includes the Treesitter library, which supports parsing for various programming languages. According to Neovim's documentation (See: [Treesitter](https://neovim.io/doc/user/treesitter.html#_parser-files)):
+To ensure Markdown Headers functions correctly, a language parser is required.
+Neovim includes the Treesitter library, which supports parsing for various
+programming languages. According to Neovim's documentation (see:
+[Treesitter](https://neovim.io/doc/user/treesitter.html#_parser-files)):
 
-> By default, Nvim bundles parsers for C, Lua, Vimscript, Vimdoc, and Treesitter query files, but parsers can be installed via a plugin like [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) or even manually.
+> By default, Nvim bundles parsers for C, Lua, Vimscript, Vimdoc, and
+Treesitter query files. However, additional parsers can be installed through
+plugins like [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+or manually.
 
-Since the Markdown parser is not included with Neovim, you can either download it manually or install it using the [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) plugin, which also allows for easier management of other language parsers. If you choose to use the [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) plugin, ensure that it is listed as a dependency for this plugin. This is crucial because Markdown Headers may not recognize the Markdown language parser if it loads after Markdown Headers due to its size.
+Since the Markdown parser is not bundled with Neovim, you can either download
+it manually or install it via the [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) plugin,
+which also simplifies managing other language parsers. If you opt to use the
+[nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) plugin,
+make sure to list it as a dependency for Markdown Headers. This is important
+because Markdown Headers might fail to recognize the Markdown parser if it is
+loaded after the plugin due to its size.
