@@ -54,7 +54,7 @@ end
 local _query_html = function(bufnr)
   local headings = {}
   local root = _get_root(bufnr, "html")
-  local _level
+  local level
 
   for id, node in html_query:iter_captures(root, bufnr, 0, -1) do
     local name = html_query.captures[id]
@@ -63,8 +63,7 @@ local _query_html = function(bufnr)
       local range = { node:range() }
       local text = vim.api.nvim_buf_get_lines(bufnr, range[1], range[3] + 1, false)[1]
       text = string.sub(text, range[2] + 1, range[4])
-      local level = tonumber(text:match("h([1-9])"))
-      _level = level
+      level = tonumber(text:match("h([1-9])"))
     end
 
     if name == "tag_text" then
@@ -72,8 +71,8 @@ local _query_html = function(bufnr)
       local text = vim.api.nvim_buf_get_lines(bufnr, range[1], range[3] + 1, false)[1]
       text = string.sub(text, range[2] + 1, range[4])
 
-      if _level > 0 then
-        table.insert(headings, { line = range[1], text = string.rep(" ", _level - 1) .. text })
+      if level > 0 then
+        table.insert(headings, { line = range[1], text = string.rep(" ", level - 1) .. text })
       end
     end
   end
