@@ -49,11 +49,16 @@ md_headers.setup {
 }
 ```
 
-# 3. Customization Options
+# 3. Default Settings
+
+If you don't configure Markdown Headers or leave certain settings unconfigured,
+the plugin will use its default settings. These settings can be found above.
+
+# 4. Customization Options
 
 You can customize the following settings:
 
-## 3.1 Width
+## 4.1 Width
 
 You can customize the width of the Markdown Headers popup window using the
 `width` setting.
@@ -61,15 +66,15 @@ You can customize the width of the Markdown Headers popup window using the
 - **Format:** Numeric
 - **Example:** Setting the width to '100' makes the popup window 100 columns wide.
 
-## 3.2 Height
+## 4.2 Height
 
 Adjust the height of the Markdown Headers popup window with the `height` setting.
 
 - **Format:** Numeric
-- **Example:** Setting the height to '30' results in a popup window that is 30
+- **Example:** Setting the height to '40' results in a popup window that is 40
   lines high.
 
-## 3.3 Border Characters
+## 4.4 Border Characters
 
 Customize the characters used to draw the border around the popup window using
 the `borderchars` setting.
@@ -78,7 +83,7 @@ the `borderchars` setting.
 - **Example:** Setting borderchars to ``{ '', '', '', '', '', '', '', '' }``
   results in a borderless popup window.
 
-## 3.4 Popup Auto-Close
+## 4.4 Popup Auto-Close
 
 Specify whether the popup window should automatically close after selecting a
 heading using the `popup_auto_close` setting.
@@ -87,10 +92,10 @@ heading using the `popup_auto_close` setting.
 - **Example:** Setting `popup_auto_close` to false will **NOT** automatically
   close the popup window after selecting a heading.
 
-## 3.5 Highlight Groups
+## 4.5 Highlight Groups
 
 People with a keen eye for aesthetics can customize the colors of the popup.
-Markdown Headers uses 3 highlight groups:
+Markdown Headers uses 4 highlight groups:
 
 - `MarkdownHeadersTitle`: The title of the popup window.
 - `MarkdownHeadersBorder`: The border of the popup window.
@@ -98,28 +103,23 @@ Markdown Headers uses 3 highlight groups:
 
 The following settings can be customized:
 
-### 3.5.1 Title
+### 4.5.1 Title
 
 - **Format:** Table with `fg` and `bg` keys
   - **fg:** Hex color code for the text color
   - **bg:** Hex color code for the background color
 - **Example:** `{ fg = '#FF0000', bg = '#0000FF' }`
 
-### 3.5.2 Border
+### 4.5.2 Border
 
 - **Format:** Table with `fg` and `bg` keys
   - **fg:** Hex color code for the text color
   - **bg:** Hex color code for the background color
 - **Example:** `{ fg = '#FF0000', bg = '#0000FF' }`
 
-### 3.5.3 Text
+### 4.5.4 Text
 
 - **Format:** Table with `fg` and `bg` keys
   - **fg:** Hex color code for the text color
   - **bg:** Hex color code for the background color
 - **Example:** `{ fg = '#FF0000', bg = '#0000FF' }`
-
-# 4. Default Settings
-
-If you don't configure Markdown Headers or leave certain settings unconfigured,
-the plugin will use its default settings. These settings can be found above.
