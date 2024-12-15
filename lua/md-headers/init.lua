@@ -5,6 +5,11 @@ local ui = require("md-headers.ui")
 local M = {}
 
 M.markdown_headers = function(start_on_heading_above)
+  if not vim.tbl_contains(config.supported_filetypes, vim.bo.filetype) then
+    vim.api.nvim_echo({ { "MDHeaders: not a supported filetype", "WarningMsg" } }, true, {})
+    return
+  end
+
   local bufnr = vim.api.nvim_get_current_buf()
   local current_line = vim.api.nvim_win_get_cursor(0)[1]
   local _headings = headings.get_headings(bufnr)
