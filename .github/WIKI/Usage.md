@@ -6,18 +6,36 @@ navigation within Neovim.
 To utilize the Markdown Headers plugin for efficient navigation within Neovim,
 follow these instructions:
 
-## 1.1 MarkdownHeaders
+## 1.1 MDHeaders
 
-Execute the `:MarkdownHeaders` command to trigger a floating window displaying
-a list of headings in the current buffer. This list includes both Markdown and
-HTML headings.
+> :warning: This command was previously named `:MarkdownHeaders`, which has been
+marked as deprecated, use `:MDHeaders` instead.
 
-## 1.2 MarkdownHeadersClosest
+Opens a floating window displaying a list of headings in the current buffer,
+which includes both Markdown and HTML headings. The user's cursor is placed
+on the first heading in the list.
 
-For enhanced and precise navigation, activate the plugin with the cursor
-preemptively placed at the current heading using the `:MarkdownHeadersClosest`
-command. This functionality facilitates focused navigation within the Markdown
-file, aligning the cursor with the specific heading you are actively editing.
+Recommended keybinding:
+
+```lua
+vim.keymap.set('n', '<leader>mh', '<cmd>MDHeaders<CR>', { silent = true })
+```
+
+## 1.2 MDHeadersCurrent
+
+> :warning: This command was previously named `:MarkdownHeadersClosest`, which has
+marked as deprecated, use `:MDHeadersCurrent` instead.
+
+Opens a floating window that displays a list of headings from the current
+buffer. This list includes both Markdown and HTML headings. The cursor is
+automatically positioned on the heading corresponding to the section where the
+user is currently editing.
+
+Recommended keybinding:
+
+```lua
+vim.keymap.set('n', '<leader>mc', '<cmd>MDHeadersCurrent<CR>', { silent = true })
+```
 
 # 2. Navigation
 
@@ -33,28 +51,4 @@ streamlining your workflow. However, this behavior changes when the
 preventing automatic closure. Refer to the
 [configuration](https://github.com/AntonVanAssche/md-headers.nvim/wiki/Configuration)
 page for additional details on this setting.
-
-# 3. Keybinding Recommendation
-
-For a more efficient workflow, it's recommended to bind both commands to
-keystrokes. The example below demonstrates how to set up these keybindings in
-your init.lua file. You can also find this information on the
-[configuration](https://github.com/AntonVanAssche/md-headers.nvim/wiki/Configuration)
-page.
-
-```lua
-vim.keymap.set('n', '<leader>mh', '<cmd>MarkdownHeaders<CR>', { silent = true })
-vim.keymap.set('n', '<leader>mc', '<cmd>MarkdownHeadersClosest<CR>', { silent = true })
-```
-
-# 4. Examples
-
-Execute the following commands to interact with the plugin:
-
-```vim
-:MarkdownHeaders
-:MarkdownHeadersClosest
-```
-
-These commands open the floating window, providing a quick and convenient way
 to navigate and explore your Markdown or HTML document's structure.
