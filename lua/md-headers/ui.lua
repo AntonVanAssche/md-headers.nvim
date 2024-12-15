@@ -100,6 +100,11 @@ M.select_heading = function()
 end
 
 M.open_window = function(headings, heading_to_start_on)
+  if next(headings) == nil then
+    vim.api.nvim_echo({ { "MDHeaders: no headings to display", "WarningMsg" } }, true, {})
+    return
+  end
+
   _open_window(headings, heading_to_start_on)
   _set_window_options(0)
   _set_buffer_keymaps(0)
