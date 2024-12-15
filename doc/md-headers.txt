@@ -1,35 +1,61 @@
 *md-headers.txt*  Navigate between Mardown headings with ease from within Neovim.
-*MarkdownHeaders*
+*MDHeaders*
 
 License: MIT
 Author: Anton Van Assche <https://github.com/AntonVanAssche/>
 
 ===============================================================================
-CONTENTS                                                   *MarkdownHeaders-TOC*
+CONTENTS                                                         *MDHeaders-TOC*
 
     1. Commands.............|md-headers-commands|
     2. Configuration........|md-headers-configuration|
 
 ===============================================================================
-1. Commands                                            *MarkdownHeadersCommands*
+1. Commands                                                  *MDHeadersCommands*
 
-MarkdownHeaders                                               *:MarkdownHeaders*
+MDHeaders                                                           *:MDHeaders*
 
-  Open the navigation window containing the headings within the current
-  buffer. Use `<CR>` to navigate to the selected heading, and `q` or `<Esc>`
-  to close the window.
+  Opens a floating window displaying a list of headings in the current
+  buffer, which includes both Markdown and HTML headings. The user's
+  cursor is placed on the first heading in the list.
 
-MarkdownHeadersClosest                                 *:MarkdownHeadersClosest*
+  Use `<CR>` to navigate to the selected heading, and `q` or `<Esc>` to
+  close the window.
 
-  Open the navigation window containing the headings within the current
-  buffer, but with the cursor on the heading you are currently at. To
-  navigate to the selected heading, use `<CR>`. Use `q` or `<Esc>` to close
-  the window.
+  Reqommended keybinding:
+>
+    vim.keymap.set(
+      'n',
+      '<leader>mh',
+      '<cmd>MDHeaders<CR>',
+      { silent = true }
+    )
+<
+
+MDHeadersCurrent                                             *:MDHeadersCurrent*
+
+  Opens a floating window that displays a list of headings from the
+  current buffer. This list includes both Markdown and HTML headings.
+  The cursor is automatically positioned on the heading corresponding to
+  the section where the user is currently editing.
+
+  Use `<CR>` to navigate to the selected heading, and `q` or `<Esc>` to
+  close the window.
+
+  Reqommended keybinding:
+>
+    vim.keymap.set(
+      'n',
+      '<leader>mc',
+      '<cmd>MDHeadersCurrent<CR>',
+      { silent = true }
+    )
+<
 
 ===============================================================================
-2. Configuration                                  *MarkdownHeadersConfiguration*
+2. Configuration                                        *MDHeadersConfiguration*
 
-  MarkdownHeaders can be configured by calling its `setup` function.
+  MDHeaders can be configured by calling its `setup` function.
 
 >
   require("md-headers").setup {
@@ -104,4 +130,5 @@ MarkdownHeadersClosest                                 *:MarkdownHeadersClosest*
   }
 <
 
+===============================================================================
 vim:tw=78:ts=2:sts=2:sw=2:ft=help:norl:
