@@ -45,7 +45,6 @@ Importing file below or directory it is contained on lazy setup.
 return {
     'AntonVanAssche/md-headers.nvim',
     version = '*',
-    lazy = false,
     dependencies = {
         'nvim-lua/plenary.nvim',
         -- 'nvim-treesitter/nvim-treesitter',
@@ -56,13 +55,7 @@ return {
 }
 ```
 
-# 3. Lazy Loading
-
-It's not recommended to lazy load Markdown Headers. The plugin isn't
-resource-expensive, performing minimal validation and configuration setting.
-There's no performance benefit from lazy loading.
-
-# 4. Markdown language parser
+# 3. Markdown language parser
 
 To ensure Markdown Headers functions correctly, a language parser is required.
 Neovim includes the Treesitter library, which supports parsing for various
