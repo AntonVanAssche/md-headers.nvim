@@ -1,5 +1,13 @@
 local M = {}
 
+M.supported_filetypes = {
+  "markdown",
+  "markdown.pandoc",
+  "markdown.markdown",
+  "markdown",
+  "quarto",
+  "rmd",
+}
 M.config = {
   width = 60,
   height = 10,
