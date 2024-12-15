@@ -91,8 +91,8 @@ M.select_heading = function()
   local bufnr = vim.api.nvim_get_current_buf()
   local line = vim.api.nvim_win_get_cursor(0)[1]
   local headings = vim.b[bufnr].headings
-  if not headings then
-    vim.notify("No headings found!", vim.log.levels.ERROR)
+  if next(headings) == nil then
+    vim.api.nvim_err_writeln("MDHeaders: can not open empty headings")
     return
   end
 
