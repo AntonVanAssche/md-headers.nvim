@@ -2,8 +2,8 @@
 
 All contributions are welcome! Just open a pull request.
 
-You can start by fixing [issues](https://github.com/AntonVanAssche/music-controls.nvim/issues)
-labeled with [good first issue](https://github.com/AntonVanAssche/music-controls.nvim/labels/good%20first%20issue).
+You can start by fixing [issues](https://github.com/AntonVanAssche/md-headers.nvim/issues)
+labeled with [good first issue](https://github.com/AntonVanAssche/md-headers.nvim/labels/good%20first%20issue).
 
 ## Code
 
