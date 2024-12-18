@@ -3,6 +3,11 @@ local popup = require("plenary.popup")
 
 local M = {}
 
+local _get_icon = function(depth)
+  local icons = { "󰲡", "󰲣", "󰲥", "󰲧", "󰲩", "󰲫" }
+  return icons[depth] or ""
+end
+
 local _set_window_options = function(win_id)
   vim.api.nvim_win_set_option(win_id, "number", false)
   vim.api.nvim_win_set_option(win_id, "relativenumber", false)
@@ -53,7 +58,10 @@ end
 local _set_window_contents = function(bufnr, headings)
   local contents = {}
   for _, heading in ipairs(headings) do
-    table.insert(contents, heading.text)
+    table.insert(
+      contents,
+      string.rep("  ", heading.depth - 1) .. _get_icon(heading.depth) .. " " .. heading.text
+    )
   end
 
   vim.api.nvim_buf_set_lines(bufnr, 0, #contents, false, contents)
