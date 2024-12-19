@@ -117,3 +117,8 @@ The following settings can be customized:
   - **fg:** Hex color code for the text color
   - **bg:** Hex color code for the background color
 - **Example:** `{ fg = '#FF0000', bg = '#0000FF' }`
+
+# 5. Verify your Configuration
+
+To verify your configuration for Markdown Headers, run a health check using
+`:checkhealth md-headers`.
