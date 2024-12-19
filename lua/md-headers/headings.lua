@@ -30,20 +30,19 @@ end
 
 local _query_md = function(bufnr)
   local headings = {}
-
   local root = _get_root(bufnr, "markdown")
+
   for id, node in md_query:iter_captures(root, bufnr, 0, -1) do
-    local name = md_query.captures[id]
-
-    if name == "md_heading" then
+    if md_query.captures[id] == "md_heading" then
       local range = { node:range() }
-      local text = vim.api.nvim_buf_get_lines(bufnr, range[1], range[3], false)[1]
-      local level = 0
-      level, text = text:match("^(#+) (.*)")
-      level = #level
-
-      if tonumber(level) > 0 then
-        table.insert(headings, { line = range[1], text = string.rep(" ", level - 1) .. text })
+      local line_text = vim.api.nvim_buf_get_lines(bufnr, range[1], range[1] + 1, false)[1]
+      local hashes, text = line_text:match("^(#+)%s+(.*)")
+      if hashes then
+        table.insert(headings, {
+          line = range[1],
+          text = text,
+          depth = #hashes,
+        })
       end
     end
   end
@@ -54,26 +53,28 @@ end
 local _query_html = function(bufnr)
   local headings = {}
   local root = _get_root(bufnr, "html")
-  local level
+  local depth = nil
 
   for id, node in html_query:iter_captures(root, bufnr, 0, -1) do
     local name = html_query.captures[id]
 
     if name == "html_heading" then
       local range = { node:range() }
-      local text = vim.api.nvim_buf_get_lines(bufnr, range[1], range[3] + 1, false)[1]
-      text = string.sub(text, range[2] + 1, range[4])
-      level = tonumber(text:match("h([1-9])"))
-    end
-
-    if name == "tag_text" then
+      local line_text = vim.api.nvim_buf_get_lines(bufnr, range[1], range[1] + 1, false)[1]
+      depth = tonumber(line_text:sub(range[2] + 1, range[4]):match("h([1-9])"))
+    elseif name == "tag_text" and depth then
       local range = { node:range() }
-      local text = vim.api.nvim_buf_get_lines(bufnr, range[1], range[3] + 1, false)[1]
-      text = string.sub(text, range[2] + 1, range[4])
+      local line_text = vim.api.nvim_buf_get_lines(bufnr, range[1], range[1] + 1, false)[1]
+      local text = line_text:sub(range[2] + 1, range[4])
 
-      if level > 0 then
-        table.insert(headings, { line = range[1], text = string.rep(" ", level - 1) .. text })
-      end
+      table.insert(headings, {
+        line = range[1],
+        text = text,
+        depth = depth,
+      })
+
+      -- Reset depth for the next heading.
+      depth = nil
     end
   end
 
