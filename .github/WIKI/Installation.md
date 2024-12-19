@@ -22,11 +22,12 @@ Please add unlisted plugin managers to this page.
 
 ```lua
 use {
-    'AntonVanAssche/md-headers.nvim',
-    requires = {
-        'nvim-lua/plenary.nvim'
-        -- 'nvim-treesitter/nvim-treesitter',
-    }
+  'AntonVanAssche/md-headers.nvim',
+  version = '*',
+  config = function()
+    require('md-headers').setup()
+  end,
+  ft = { 'markdown' }, -- Load only for markdown files.
 }
 ```
 
@@ -43,15 +44,10 @@ Importing file below or directory it is contained on lazy setup.
 
 ```lua
 return {
-    'AntonVanAssche/md-headers.nvim',
-    version = '*',
-    dependencies = {
-        'nvim-lua/plenary.nvim',
-        -- 'nvim-treesitter/nvim-treesitter',
-    },
-    config = function()
-        require('md-headers').setup {}
-    end,
+  'AntonVanAssche/md-headers.nvim',
+  version = '*',
+  opts = {},
+  ft = { 'markdown' }, -- Load only for markdown files.
 }
 ```
 
