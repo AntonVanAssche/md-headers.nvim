@@ -8,6 +8,7 @@ M.supported_filetypes = {
   "quarto",
   "rmd",
 }
+
 M.config = {
   width = 60,
   height = 10,
@@ -56,16 +57,7 @@ end
 
 M.setup = function(opts)
   opts = opts or {}
-
-  for k, v in pairs(opts) do
-    if type(v) == "table" and type(M.config[k]) == "table" then
-      for sub_k, sub_v in pairs(v) do
-        M.config[k][sub_k] = sub_v
-      end
-    else
-      M.config[k] = v
-    end
-  end
+  M.config = vim.tbl_deep_extend("force", M.config, opts)
 
   _set_hl_colors()
 end
