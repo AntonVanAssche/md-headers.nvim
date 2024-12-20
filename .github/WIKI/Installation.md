@@ -51,7 +51,13 @@ return {
 }
 ```
 
-# 3. Markdown language parser
+# 3. Verify your installation
+
+To verify that the Markdown Headers plugin is correctly installed, you can run
+`:checkhealth md-headers` in Neovim. This command will show which dependencies
+are installed and which are missing.
+
+# 4. Markdown language parser
 
 To ensure Markdown Headers functions correctly, a language parser is required.
 Neovim includes the Treesitter library, which supports parsing for various
