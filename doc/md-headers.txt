@@ -56,6 +56,8 @@ MDHeadersCurrent                                             *:MDHeadersCurrent*
 2. Configuration                                        *MDHeadersConfiguration*
 
   MDHeaders can be configured by calling its `setup` function.
+  To verify your configuration for Markdown Headers, run a health
+  check using `:checkhealth md-headers`.
 
 >
   require("md-headers").setup {
