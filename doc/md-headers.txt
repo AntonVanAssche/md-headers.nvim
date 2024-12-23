@@ -1,136 +1,101 @@
-*md-headers.txt*  Navigate between Mardown headings with ease from within Neovim.
-*MDHeaders*
+*md-headers*  Navigate between Mardown headings with ease.
 
-License: MIT
-Author: Anton Van Assche <https://github.com/AntonVanAssche/>
+Minimum version of neovim: nightly
+
+Author(s):
+  Anton Van Assche <vanasscheanton@gmail.com>
+  https://github.com/AntonVanAssche/md-headers.nvim/graphs/contributors
+
+                                                        Table of Contents: gO
+===============================================================================
+INTRODUCTION                                                 *md-headers-intro*
+
+md-headers utilizes Neovim's Treesitter to provide a fast and efficient way
+to navigate Markdown and HTML headings, offering features like quick jumping,
+a comprehensive heading list, and full customization to streamline your
+workflow.
 
 ===============================================================================
-CONTENTS                                                         *MDHeaders-TOC*
+COMMANDS                                                  *md-headers-commands*
 
-    1. Commands.............|md-headers-commands|
-    2. Configuration........|md-headers-configuration|
+                                                                   *:MDHeaders*
+:MDHeaders
+:lua require('md-headers').markdown_headers(false)
+
+Opens a floating window displaying a list of headings in the current buffer,
+which includes both Markdown and HTML headings. The user's cursor is placed
+on the first heading in the list.
+
+                                                            *:MDHeadersCurrent*
+:MDHeadersCurrent
+:lua require('md-headers').markdown_headers(true)
+
+Opens a floating window that displays a list of headings from the current
+buffer. This list includes both Markdown and HTML headings. The cursor is
+automatically positioned on the heading corresponding to the section where
+the user is currently editing.
 
 ===============================================================================
-1. Commands                                                  *MDHeadersCommands*
+DEPRECATIONS                                          *md-headers-deprecations*
 
-MDHeaders                                                           *:MDHeaders*
+The following commands have been marked as deprecated and will be removed in
+future versions of the plugin. Please update your configuration to use the
+new commands.
 
-  Opens a floating window displaying a list of headings in the current
-  buffer, which includes both Markdown and HTML headings. The user's
-  cursor is placed on the first heading in the list.
+:MarkdownHeaders            Superceded by :MDHeaders
+:MarkdownHeadersClosest     Superceded by :MDHeadersCurrent
 
-  Use `<CR>` to navigate to the selected heading, and `q` or `<Esc>` to
-  close the window.
+===============================================================================
+CONFIGURATION                                        *md-headers-configuration*
 
-  Reqommended keybinding:
+                                             *md-headers-configuration-options*
+CONFIGURATION OPTIONS
+
+md-headers is fully customizable through its configuration options. Below is
+the default configuration table. Users can override these options in their
+Neovim setup to better fit their workflow.
+
+Default configuration:
+
 >
-    vim.keymap.set(
-      'n',
-      '<leader>mh',
-      '<cmd>MDHeaders<CR>',
-      { silent = true }
-    )
+  {
+    width = 60,                      -- Width of the floating window
+    height = 10,                     -- Height of the floating window
+    borderchars = {                  -- Characters used for the window border
+      "─", "│", "─", "│", "╭", "╮", "╯", "╰"
+    },
+    popup_auto_close = true,         -- Automatically close popup after use
+    highlight_groups = {             -- Highlight groups for customization
+      title = { fg = nil, bg = nil },  -- Title text foreground/background
+      border = { fg = nil, bg = nil }, -- Border foreground/background
+      text = { fg = nil, bg = nil },   -- Text foreground/background
+    },
+  }
 <
 
-MDHeadersCurrent                                             *:MDHeadersCurrent*
+                                               *md-headers-configuration-setup*
+CONFIGURATION SETUP
 
-  Opens a floating window that displays a list of headings from the
-  current buffer. This list includes both Markdown and HTML headings.
-  The cursor is automatically positioned on the heading corresponding to
-  the section where the user is currently editing.
-
-  Use `<CR>` to navigate to the selected heading, and `q` or `<Esc>` to
-  close the window.
-
-  Reqommended keybinding:
->
-    vim.keymap.set(
-      'n',
-      '<leader>mc',
-      '<cmd>MDHeadersCurrent<CR>',
-      { silent = true }
-    )
-<
-
-===============================================================================
-2. Configuration                                        *MDHeadersConfiguration*
-
-  MDHeaders can be configured by calling its `setup` function.
-  To verify your configuration for Markdown Headers, run a health
-  check using `:checkhealth md-headers`.
+To modify the default settings, add the following to your Neovim
+configuration:
 
 >
-  require("md-headers").setup {
-    width = 60,
-    height = 10,
-    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-    popup_auto_close = true, -- or false
+  require('md-headers').setup {
+    width = 80,
+    height = 15,
+    borderchars = { "-", "|", "-", "|", "+", "+", "+", "+" },
+    popup_auto_close = false,
     highlight_groups = {
-      title = {
-        fg = nil,
-        bg = nil,
-      },
-      border = {
-        fg = nil,
-        bg = nil,
-      },
-      text = {
-        fg = nil,
-        bg = nil,
-      },
+      title = { fg = "#FF0000", bg = nil },
+      border = { fg = "#00FF00", bg = nil },
+      text = { fg = "#0000FF", bg = nil },
     },
   }
 <
 
-`width`:
-  Adjust the width of the Markdown Headers popup window using the `width`
-  setting.
-
-  For example, setting the width to '100' makes the popup window 100
-  columns wide.
-
-`height`:
-  Adjust the height of the Markdown Headers popup window with the `height`
-  setting.
-
-  For example, setting the height to '30' results in a popup window that
-  is 30 lines high.
-
-`borderchars`:
-  Customize the characters used to draw the border around the popup window
-  using the `borderchars` setting.
-
-  For example, setting borderchars to { '', '', '', '', '', '', '', '' }
-  results in a borderless popup window.
-
-`popup_auto_close`:
-  Specify whether the popup window should automatically close after
-  selecting a heading using the `popup_auto_close` setting.
-
-  For example, setting `popup_auto_close` to `false` will NOT automatically
-  close the popup window after selecting a heading.
-
-`highlight_groups`:
-  Customize the colors used to highlight the title, border, and text within
-  the popup window using the `highlight_groups` setting.
-  For example, setting `highlight_groups` to the following:
-
->
-  highlight_groups = {
-    title = {
-      fg = "#e06c75",
-      bg = "#1e222a",
-    },
-    border = {
-      fg = "#61afef",
-      bg = "#1e222a",
-    },
-    text = {
-      fg = "#abb2bf",
-      bg = "#1e222a",
-    },
-  }
-<
+This setup example customizes the floating window size, changes the border
+characters, disables automatic popup closing, and applies specific colors to
+highlight groups.
 
 ===============================================================================
 vim:tw=78:ts=2:sts=2:sw=2:ft=help:norl:
