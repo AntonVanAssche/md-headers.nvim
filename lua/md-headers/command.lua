@@ -26,6 +26,14 @@ local cmds = {
     end,
     options = { nargs = 0 },
   },
+  {
+    name = "MDHeadersTelescope",
+    desc = "Open a Telescope window with headings for a Markdown file.",
+    func = function()
+      vim.cmd("Telescope md-headers headings")
+    end,
+    options = { nargs = 0 },
+  },
 }
 
 local function command(cmd)

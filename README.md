@@ -44,6 +44,7 @@ ideal for notes, documentation, or structured text.
 - **Quick Navigation**: Jump between Markdown/HTML headings.
 - **Heading List**: View a list of all headings.
 - **Treesitter Integration**: Accurate heading detection.
+- **Telescope Integration**: Navigate headings with Telescope.
 - **Customizable**: Adjust layout, colors, and behavior.
 
 ## Documentation

@@ -49,6 +49,11 @@ Recommended keybinding:
 vim.keymap.set('n', '<leader>mq', '<cmd>MDHeadersQuickfix<CR>', { silent = true })
 ```
 
+## 1.4 MDHeadersTelescope
+
+See the [Telescope Integration](#3-telescope-integration) section for more
+information.
+
 # 2. Navigation
 
 Navigate through the headings using the following keybindings:
@@ -64,3 +69,27 @@ preventing automatic closure. Refer to the
 [configuration](https://github.com/AntonVanAssche/md-headers.nvim/wiki/Configuration)
 page for additional details on this setting.
 to navigate and explore your Markdown or HTML document's structure.
+
+# 3. Telescope Integration
+
+Markdown Headers provides a Telescope extension to quickly navigate to
+headings in a Markdown file. This is useful for large files where headings
+act as an outline. Requires
+[`telescope.nvim`](https://www.github.com/nvim-telescope/telescope.nvim)
+to be installed.
+
+As any other Telescope extension, you can call it with the following command:
+
+```vim
+:Telescope md-headers headings
+```
+
+However, the plugin provides an alias for this command:
+
+```vim
+:MDHeadersTelescope
+```
+
+Both commands will open a Telescope picker showing all headings in the current
+buffer, with their depth and text. Select a heading to jump to that section.
+If no headings are found, a warning message is shown.
