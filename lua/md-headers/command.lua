@@ -18,6 +18,14 @@ local cmds = {
     options = { nargs = 0 },
     deprecated = "MarkdownHeadersClosest",
   },
+  {
+    name = "MDHeadersQuickfix",
+    desc = "Generate a quickfix list of headings for a Markdown file.",
+    func = function()
+      require("md-headers").quickfix()
+    end,
+    options = { nargs = 0 },
+  },
 }
 
 local function command(cmd)

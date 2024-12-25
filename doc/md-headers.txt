@@ -35,6 +35,14 @@ buffer. This list includes both Markdown and HTML headings. The cursor is
 automatically positioned on the heading corresponding to the section where
 the user is currently editing.
 
+                                                           *:MDHeadersQuickfix*
+:MDHeadersQuickfix
+:lua require('md-headers').quickfix()
+
+Open a quickfix window with a list of headings in the current buffer. This
+list includes both Markdown and HTML headings. Calling this command again
+will close the quickfix window. Making it act as a toggle.
+
 ===============================================================================
 DEPRECATIONS                                          *md-headers-deprecations*
 
