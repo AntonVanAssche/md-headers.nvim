@@ -37,6 +37,18 @@ Recommended keybinding:
 vim.keymap.set('n', '<leader>mc', '<cmd>MDHeadersCurrent<CR>', { silent = true })
 ```
 
+## 1.3 MDHeadersQuickfix
+
+Opens a quickfix window displaying a list of headings in the current buffer,
+including both Markdown and HTML headings. Calling this command again will
+close the quickfix window. Making it act as a toggle.
+
+Recommended keybinding:
+
+```lua
+vim.keymap.set('n', '<leader>mq', '<cmd>MDHeadersQuickfix<CR>', { silent = true })
+```
+
 # 2. Navigation
 
 Navigate through the headings using the following keybindings:

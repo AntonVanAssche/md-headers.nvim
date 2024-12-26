@@ -2,22 +2,34 @@ local M = {}
 local cmds = {
   {
     name = "MDHeaders",
-    closest = false,
     desc = "Generate a table of contents for a Markdown file.",
+    func = function()
+      require("md-headers").markdown_headers(false)
+    end,
     options = { nargs = 0 },
     deprecated = "MarkdownHeaders",
   },
   {
     name = "MDHeadersCurrent",
-    closest = true,
     desc = "Generate a table of contents for a Markdown file, using the closest heading.",
+    func = function()
+      require("md-headers").markdown_headers(true)
+    end,
     options = { nargs = 0 },
     deprecated = "MarkdownHeadersClosest",
+  },
+  {
+    name = "MDHeadersQuickfix",
+    desc = "Generate a quickfix list of headings for a Markdown file.",
+    func = function()
+      require("md-headers").quickfix()
+    end,
+    options = { nargs = 0 },
   },
 }
 
 local function command(cmd)
-  vim.api.nvim_create_user_command(cmd.name, cmd.command, cmd.options)
+  vim.api.nvim_create_user_command(cmd.name, cmd.func, cmd.options)
 
   if cmd.deprecated then
     vim.api.nvim_create_user_command(cmd.deprecated, function()
@@ -27,7 +39,7 @@ local function command(cmd)
           "WarningMsg",
         },
       }, true, {})
-      vim.cmd(cmd.name)
+      cmd.func()
     end, cmd.options)
   end
 end
@@ -35,9 +47,6 @@ end
 -- Should only be called from plugin directory.
 M.setup = function()
   for _, cmd in ipairs(cmds) do
-    cmd.command =
-      string.format("lua require('md-headers').markdown_headers(%s)", tostring(cmd.closest))
-
     command(cmd)
   end
 end

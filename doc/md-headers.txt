@@ -35,6 +35,14 @@ buffer. This list includes both Markdown and HTML headings. The cursor is
 automatically positioned on the heading corresponding to the section where
 the user is currently editing.
 
+                                                           *:MDHeadersQuickfix*
+:MDHeadersQuickfix
+:lua require('md-headers').quickfix()
+
+Open a quickfix window with a list of headings in the current buffer. This
+list includes both Markdown and HTML headings. Calling this command again
+will close the quickfix window. Making it act as a toggle.
+
 ===============================================================================
 DEPRECATIONS                                          *md-headers-deprecations*
 
@@ -96,6 +104,20 @@ configuration:
 This setup example customizes the floating window size, changes the border
 characters, disables automatic popup closing, and applies specific colors to
 highlight groups.
+
+                                 *md-headers-configuration-recommended-keymaps*
+CONFIGURATION RECOMMENDED KEYMAPS
+
+This plugis does not come with default keymaps. Below are some recommended
+keymaps to add to your configuration for a more accessible experience.
+
+>
+  local map = vim.api.nvim_set_keymap
+  local opts = { noremap = true, silent = true }
+  map('n', '<leader>mh', ':MDHeaders<CR>', opts)
+  map('n', '<leader>mc', ':MDHeadersCurrent<CR>', opts)
+  map('n', '<leader>mq', ':MDHeadersQuickfix<CR>', opts)
+<
 
 ===============================================================================
 vim:tw=78:ts=2:sts=2:sw=2:ft=help:norl:
