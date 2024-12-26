@@ -43,6 +43,11 @@ Open a quickfix window with a list of headings in the current buffer. This
 list includes both Markdown and HTML headings. Calling this command again
 will close the quickfix window. Making it act as a toggle.
 
+                                                          *:MDHeadersTelescope*
+:MDHeadersTelescope
+
+See |md-headers-telescope| for more information.
+
 ===============================================================================
 DEPRECATIONS                                          *md-headers-deprecations*
 
@@ -52,6 +57,29 @@ new commands.
 
 :MarkdownHeaders            Superceded by :MDHeaders
 :MarkdownHeadersClosest     Superceded by :MDHeadersCurrent
+
+===============================================================================
+TELESCOPE INTEGRATION                                    *md-headers-telescope*
+
+Markdown Headers provides a Telescope extension to quickly navigate to
+headings in a Markdown file. This is useful for large files where headings
+act as an outline. Requires `telescope.nvim` to be installed.
+
+As any other Telescope extension, you can call it with the following command:
+
+>
+  :Telescope md-headers headings
+<
+
+However, the plugin provides an alias for this command:
+
+>
+  :MDHeadersTelescope
+<
+
+Both commands will open a Telescope picker showing all headings in the current
+buffer, with their depth and text. Select a heading to jump to that section.
+If no headings are found, a warning message is shown.
 
 ===============================================================================
 CONFIGURATION                                        *md-headers-configuration*
@@ -117,6 +145,7 @@ keymaps to add to your configuration for a more accessible experience.
   map('n', '<leader>mh', ':MDHeaders<CR>', opts)
   map('n', '<leader>mc', ':MDHeadersCurrent<CR>', opts)
   map('n', '<leader>mq', ':MDHeadersQuickfix<CR>', opts)
+  map('n', '<leader>mt', ':MDHeadersTelecope<CR>', opts)
 <
 
 ===============================================================================
