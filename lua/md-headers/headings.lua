@@ -28,6 +28,37 @@ local _get_root = function(bufnr, lang)
   end
 end
 
+local _get_fenced_code_block_ranges = function(bufnr)
+  local fenced_ranges = {}
+
+  local function walk(node)
+    if node:type() == "fenced_code_block" then
+      local start_row, _, end_row, _ = node:range()
+      table.insert(fenced_ranges, { start_row, end_row })
+    end
+
+    for child in node:iter_children() do
+      walk(child)
+    end
+  end
+
+  local root = _get_root(bufnr, "markdown")
+  if root then
+    walk(root)
+  end
+
+  return fenced_ranges
+end
+
+local function _is_inside_fenced(line, fenced_ranges)
+  for _, range in ipairs(fenced_ranges) do
+    if line >= range[1] and line <= range[2] then
+      return true
+    end
+  end
+  return false
+end
+
 local _query_md = function(bufnr)
   local headings = {}
   local root = _get_root(bufnr, "markdown")
@@ -52,30 +83,29 @@ end
 
 local _query_html = function(bufnr)
   local headings = {}
+  local fenced_ranges = _get_fenced_code_block_ranges(bufnr)
   local root = _get_root(bufnr, "html")
   local depth = nil
 
   for id, node in html_query:iter_captures(root, bufnr, 0, -1) do
     local name = html_query.captures[id]
+    local range = { node:range() }
+    local line = range[1]
+
+    if _is_inside_fenced(line, fenced_ranges) then
+      goto continue
+    end
 
     if name == "html_heading" then
-      local range = { node:range() }
-      local line_text = vim.api.nvim_buf_get_lines(bufnr, range[1], range[1] + 1, false)[1]
+      local line_text = vim.api.nvim_buf_get_lines(bufnr, line, line + 1, false)[1]
       depth = tonumber(line_text:sub(range[2] + 1, range[4]):match("h([1-9])"))
     elseif name == "tag_text" and depth then
-      local range = { node:range() }
-      local line_text = vim.api.nvim_buf_get_lines(bufnr, range[1], range[1] + 1, false)[1]
-      local text = line_text:sub(range[2] + 1, range[4])
-
-      table.insert(headings, {
-        line = range[1],
-        text = text,
-        depth = depth,
-      })
-
-      -- Reset depth for the next heading.
+      local text = vim.api.nvim_buf_get_text(bufnr, line, range[2], line, range[4], {})[1]
+      table.insert(headings, { line = line, text = text, depth = depth })
       depth = nil
     end
+
+    ::continue::
   end
 
   return headings
