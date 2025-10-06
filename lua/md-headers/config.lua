@@ -14,6 +14,11 @@ M.config = {
   height = 10,
   borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
   popup_auto_close = true,
+  win_options = {
+    number = false,
+    relativenumber = true,
+    cursorline = true,
+  },
   highlight_groups = {
     title = {
       fg = nil,

@@ -9,9 +9,9 @@ local _get_icon = function(depth)
 end
 
 local _set_window_options = function(win_id)
-  vim.api.nvim_win_set_option(win_id, "number", false)
-  vim.api.nvim_win_set_option(win_id, "relativenumber", false)
-  vim.api.nvim_win_set_option(win_id, "cursorline", true)
+  vim.api.nvim_win_set_option(win_id, "number", config.config.win_options.number)
+  vim.api.nvim_win_set_option(win_id, "relativenumber", config.config.win_options.relativenumber)
+  vim.api.nvim_win_set_option(win_id, "cursorline", config.config.win_options.cursorline)
 end
 
 local _set_buffer_keymaps = function(bufnr)
