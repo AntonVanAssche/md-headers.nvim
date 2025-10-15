@@ -26,6 +26,11 @@ modifying the values of different settings.
   height = 10,
   borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
   popup_auto_close = true, -- or false
+  win_options = {
+    number = false,
+    relativenumber = false,
+    cursorline = true,
+  },
   highlight_groups = {
     title = {
       fg = nil,
@@ -86,7 +91,30 @@ heading using the `popup_auto_close` setting.
 - **Example:** Setting `popup_auto_close` to false will **NOT** automatically
   close the popup window after selecting a heading.
 
-## 4.5 Highlight Groups
+## 4.5 Window Options
+
+The following options can be set for the popup window using the `win_options`
+these settings will override your global settings for the popup window.
+
+### 4.5.1 Number
+
+- *Format:* Boolean (true or false)
+- *Example:* Setting `number` to true will display line numbers in the popup
+  window.
+
+### 4.5.2 Relative Number
+
+- *Format:* Boolean (true or false)
+- *Example:* Setting `relativenumber` to true will display relative line numbers
+  in the popup window (even when `number` is set to false).
+
+### 4.5.3 Cursor Line
+
+- *Format:* Boolean (true or false)
+- *Example:* Setting `cursorline` to true will highlight the line under the
+  cursor in the popup window.
+
+## 4.6 Highlight Groups
 
 People with a keen eye for aesthetics can customize the colors of the popup.
 Markdown Headers uses 4 highlight groups:
@@ -97,21 +125,21 @@ Markdown Headers uses 4 highlight groups:
 
 The following settings can be customized:
 
-### 4.5.1 Title
+### 4.6.1 Title
 
 - **Format:** Table with `fg` and `bg` keys
   - **fg:** Hex color code for the text color
   - **bg:** Hex color code for the background color
 - **Example:** `{ fg = '#FF0000', bg = '#0000FF' }`
 
-### 4.5.2 Border
+### 4.6.2 Border
 
 - **Format:** Table with `fg` and `bg` keys
   - **fg:** Hex color code for the text color
   - **bg:** Hex color code for the background color
 - **Example:** `{ fg = '#FF0000', bg = '#0000FF' }`
 
-### 4.5.4 Text
+### 4.6.4 Text
 
 - **Format:** Table with `fg` and `bg` keys
   - **fg:** Hex color code for the text color

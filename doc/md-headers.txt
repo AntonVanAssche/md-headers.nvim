@@ -101,6 +101,11 @@ Default configuration:
       "─", "│", "─", "│", "╭", "╮", "╯", "╰"
     },
     popup_auto_close = true,         -- Automatically close popup after use
+    win_options = {                  -- Window options for the floating window
+      number = false,                -- Disable line numbers
+      relativenumber = false,        -- Disable relative line numbers
+      cursorline = true,             -- Enable cursor line highlighting
+    },
     highlight_groups = {             -- Highlight groups for customization
       title = { fg = nil, bg = nil },  -- Title text foreground/background
       border = { fg = nil, bg = nil }, -- Border foreground/background
@@ -121,6 +126,11 @@ configuration:
     height = 15,
     borderchars = { "-", "|", "-", "|", "+", "+", "+", "+" },
     popup_auto_close = false,
+    win_options = {
+      number = true,
+      relativenumber = false,
+      cursorline = true,
+    },
     highlight_groups = {
       title = { fg = "#FF0000", bg = nil },
       border = { fg = "#00FF00", bg = nil },
