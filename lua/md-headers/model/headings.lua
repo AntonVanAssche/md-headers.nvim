@@ -136,11 +136,11 @@ M.get_headings = function(bufnr)
   return headings
 end
 
-M.get_heading_above = function(headings, current_line)
+M.get_index_of_heading_above = function(headings, start_line)
   local popup_window_line = 0
 
   for _, heading in ipairs(headings) do
-    if heading.line < current_line then
+    if heading.line < start_line then
       popup_window_line = popup_window_line + 1
     end
   end

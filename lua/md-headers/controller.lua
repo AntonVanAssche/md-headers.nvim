@@ -16,7 +16,7 @@ function M.popup(cursor_line)
 
   local start_line = 1
   if cursor_line then
-    start_line = math.max(headings.get_heading_above(_headings, cursor_line), 1)
+    start_line = math.max(headings.get_index_of_heading_above(_headings, cursor_line), 1)
   end
 
   window.open(_headings, start_line)
