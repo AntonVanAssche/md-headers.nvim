@@ -7,7 +7,6 @@ local cmds = {
       require("md-headers").markdown_headers(false)
     end,
     options = { nargs = 0 },
-    deprecated = "MarkdownHeaders",
   },
   {
     name = "MDHeadersCurrent",
@@ -16,7 +15,6 @@ local cmds = {
       require("md-headers").markdown_headers(true)
     end,
     options = { nargs = 0 },
-    deprecated = "MarkdownHeadersClosest",
   },
   {
     name = "MDHeadersQuickfix",
@@ -38,18 +36,6 @@ local cmds = {
 
 local function command(cmd)
   vim.api.nvim_create_user_command(cmd.name, cmd.func, cmd.options)
-
-  if cmd.deprecated then
-    vim.api.nvim_create_user_command(cmd.deprecated, function()
-      vim.api.nvim_echo({
-        {
-          "WARNING: this command has been marked as deprecated, use " .. cmd.name .. " instead.",
-          "WarningMsg",
-        },
-      }, true, {})
-      cmd.func()
-    end, cmd.options)
-  end
 end
 
 -- Should only be called from plugin directory.

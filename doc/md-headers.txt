@@ -49,16 +49,6 @@ will close the quickfix window. Making it act as a toggle.
 See |md-headers-telescope| for more information.
 
 ===============================================================================
-DEPRECATIONS                                          *md-headers-deprecations*
-
-The following commands have been marked as deprecated and will be removed in
-future versions of the plugin. Please update your configuration to use the
-new commands.
-
-:MarkdownHeaders            Superceded by :MDHeaders
-:MarkdownHeadersClosest     Superceded by :MDHeadersCurrent
-
-===============================================================================
 TELESCOPE INTEGRATION                                    *md-headers-telescope*
 
 Markdown Headers provides a Telescope extension to quickly navigate to
