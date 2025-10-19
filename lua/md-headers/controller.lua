@@ -41,6 +41,10 @@ function M.quickfix()
   quickfix.open(_headings)
 end
 
+function M.telescope()
+  vim.cmd("Telescope md-headers headings")
+end
+
 function M.register_commands()
   local cmds = {
     {
@@ -67,9 +71,7 @@ function M.register_commands()
     },
     {
       "MDHeadersTelescope",
-      function()
-        vim.cmd("Telescope md-headers headings")
-      end,
+      M.telescope,
       { desc = "Open a Telescope window with headings for a Markdown file.", nargs = 0 },
     },
   }
