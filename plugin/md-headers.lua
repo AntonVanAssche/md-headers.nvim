@@ -2,8 +2,8 @@ if vim.g.loaded_md_headers then
   return
 end
 
-local supported_filetypes = require("md-headers.model.config").supported_filetypes
-if not vim.tbl_contains(supported_filetypes, vim.bo.filetype) then
+local utils = require("md-headers.model.utils")
+if not utils.is_supported_filetype() then
   return
 end
 

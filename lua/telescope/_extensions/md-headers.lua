@@ -4,10 +4,8 @@ if not has_telescope then
   return
 end
 
-local config = require("md-headers.model.config")
-local feedback = require("md-headers.ui.feedback")
-if not vim.tbl_contains(config.supported_filetypes, vim.bo.filetype) then
-  feedback.warn("Not a supported filetype")
+local utils = require("md-headers.model.utils")
+if not utils.is_supported_filetype() then
   return
 end
 

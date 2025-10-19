@@ -1,17 +1,13 @@
-local config = require("md-headers.model.config")
 local feedback = require("md-headers.ui.feedback")
 local headings = require("md-headers.model.headings")
-local window = require("md-headers.ui.window")
 local quickfix = require("md-headers.ui.quickfix")
+local utils = require("md-headers.model.utils")
+local window = require("md-headers.ui.window")
 
 local M = {}
 
 function M.popup(cursor_line)
-  if
-    not vim.tbl_contains(config.supported_filetypes, vim.bo.filetype)
-    and not vim.tbl_contains({ "qf", "lspinfo" }, vim.bo.filetype)
-  then
-    feedback.warn("Not a supported filetype")
+  if not utils.is_supported_filetype() then
     return
   end
 
@@ -27,11 +23,7 @@ function M.popup(cursor_line)
 end
 
 function M.quickfix()
-  if
-    not vim.tbl_contains(config.supported_filetypes, vim.bo.filetype)
-    and not vim.tbl_contains({ "qf", "lspinfo" }, vim.bo.filetype)
-  then
-    feedback.warn("Not a supported filetype")
+  if not utils.is_supported_filetype() then
     return
   end
 
