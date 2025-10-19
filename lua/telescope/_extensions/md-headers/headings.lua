@@ -1,4 +1,5 @@
-local headings = require("md-headers.headings")
+local feedback = require("md-headers.ui.feedback")
+local headings = require("md-headers.model.headings")
 
 local actions = require("telescope.actions")
 local finders = require("telescope.finders")
@@ -59,7 +60,7 @@ return function(opts)
   local headings_data = headings.get_headings(bufnr)
 
   if not next(headings_data) then
-    vim.api.nvim_echo({ { "MDHeaders: no headings to display", "WarningMsg" } }, true, {})
+    feedback.warn("No headings to display")
     return
   end
 

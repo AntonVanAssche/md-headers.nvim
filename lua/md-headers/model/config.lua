@@ -1,15 +1,6 @@
 local M = {}
 
-M.supported_filetypes = {
-  "markdown",
-  "markdown.pandoc",
-  "markdown.markdown",
-  "markdown",
-  "quarto",
-  "rmd",
-}
-
-M.config = {
+M.defaults = {
   width = 60,
   height = 10,
   borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
@@ -36,8 +27,17 @@ M.config = {
   },
 }
 
-local _set_hl_colors = function()
-  local highlight_groups = M.config.highlight_groups
+M.supported_filetypes = {
+  "markdown",
+  "markdown.pandoc",
+  "markdown.markdown",
+  "markdown",
+  "quarto",
+  "rmd",
+}
+
+local function set_hl_colors()
+  local highlight_groups = M.values.highlight_groups
 
   if highlight_groups.title.fg ~= nil or highlight_groups.title.bg ~= nil then
     vim.api.nvim_set_hl(0, "MarkdownHeadersTitle", {
@@ -61,11 +61,11 @@ local _set_hl_colors = function()
   end
 end
 
-M.setup = function(opts)
+function M.setup(opts)
   opts = opts or {}
-  M.config = vim.tbl_deep_extend("force", M.config, opts)
+  M.values = vim.tbl_deep_extend("force", M.defaults, opts)
 
-  _set_hl_colors()
+  set_hl_colors()
 end
 
 return M

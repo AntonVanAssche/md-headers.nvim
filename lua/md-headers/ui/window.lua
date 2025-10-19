@@ -1,16 +1,17 @@
-local config = require("md-headers.config")
+local config = require("md-headers.model.config")
+local feedback = require("md-headers.ui.feedback")
 local popup = require("plenary.popup")
 
 local M = {}
 
 local _get_icon = function(depth)
-  return config.config.headerchars[depth] or ""
+  return config.values.headerchars[depth] or ""
 end
 
 local _set_window_options = function(win_id)
-  vim.api.nvim_win_set_option(win_id, "number", config.config.win_options.number)
-  vim.api.nvim_win_set_option(win_id, "relativenumber", config.config.win_options.relativenumber)
-  vim.api.nvim_win_set_option(win_id, "cursorline", config.config.win_options.cursorline)
+  vim.api.nvim_win_set_option(win_id, "number", config.values.win_options.number)
+  vim.api.nvim_win_set_option(win_id, "relativenumber", config.values.win_options.relativenumber)
+  vim.api.nvim_win_set_option(win_id, "cursorline", config.values.win_options.cursorline)
 end
 
 local _set_buffer_keymaps = function(bufnr)
@@ -18,21 +19,21 @@ local _set_buffer_keymaps = function(bufnr)
     bufnr,
     "n",
     "<CR>",
-    ':lua require("md-headers.ui").select_heading()<CR>',
+    ':lua require("md-headers.ui.window").select_heading()<CR>',
     { noremap = true, silent = true }
   )
   vim.api.nvim_buf_set_keymap(
     bufnr,
     "n",
     "q",
-    ':lua require("md-headers.ui").close_window()<CR>',
+    ':lua require("md-headers.ui.window").close()<CR>',
     { noremap = true, silent = true }
   )
   vim.api.nvim_buf_set_keymap(
     bufnr,
     "n",
     "<Esc>",
-    ':lua require("md-headers.ui").close_window()<CR>',
+    ':lua require("md-headers.ui.window").close()<CR>',
     { noremap = true, silent = true }
   )
 end
@@ -69,9 +70,9 @@ end
 
 local _open_window = function(headings, heading_to_start_on)
   local bufnr = vim.api.nvim_create_buf(false, true)
-  local width = config.config.width
-  local height = config.config.height
-  local borderchars = config.config.borderchars
+  local width = config.values.width
+  local height = config.values.height
+  local borderchars = config.values.borderchars
 
   local win = _create_window(bufnr, width, height, borderchars)
   _set_window_contents(bufnr, headings)
@@ -84,7 +85,7 @@ end
 
 local _goto_heading = function(headings, line)
   local win = vim.api.nvim_get_current_win()
-  local popup_auto_close = config.config.popup_auto_close
+  local popup_auto_close = config.values.popup_auto_close
 
   vim.api.nvim_win_close(win, true)
   vim.api.nvim_win_set_cursor(0, { headings[line].line + 1, 0 })
@@ -106,9 +107,9 @@ M.select_heading = function()
   _goto_heading(headings, line)
 end
 
-M.open_window = function(headings, heading_to_start_on)
+M.open = function(headings, heading_to_start_on)
   if next(headings) == nil then
-    vim.api.nvim_echo({ { "MDHeaders: no headings to display", "WarningMsg" } }, true, {})
+    feedback.warn("No headings to display")
     return
   end
 
@@ -117,7 +118,7 @@ M.open_window = function(headings, heading_to_start_on)
   _set_buffer_keymaps(0)
 end
 
-M.close_window = function()
+M.close = function()
   local win = vim.api.nvim_get_current_win()
   vim.api.nvim_win_close(win, true)
 end

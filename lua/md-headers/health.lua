@@ -1,5 +1,5 @@
 local ts_config = require("nvim-treesitter.config")
-local config = require("md-headers.config").config
+local config = require("md-headers.model.config").values
 
 local M = {}
 
