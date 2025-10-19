@@ -6,7 +6,7 @@ local quickfix = require("md-headers.ui.quickfix")
 
 local M = {}
 
-function M.markdown_headers(start_on_heading_above)
+function M.popup(start_on_heading_above)
   if not vim.tbl_contains(config.supported_filetypes, vim.bo.filetype) then
     feedback.warn("Not a supported filetype")
     return
@@ -44,14 +44,14 @@ function M.register_commands()
     {
       "MDHeaders",
       function()
-        M.markdown_headers(false)
+        M.popup(false)
       end,
       { desc = "Generate a table of contents for a Markdown file.", nargs = 0 },
     },
     {
       "MDHeadersCurrent",
       function()
-        M.markdown_headers(true)
+        M.popup(true)
       end,
       {
         desc = "Generate a table of contents for a Markdown file, using the closest heading.",
