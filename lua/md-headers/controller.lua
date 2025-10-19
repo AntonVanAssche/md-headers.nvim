@@ -6,22 +6,24 @@ local quickfix = require("md-headers.ui.quickfix")
 
 local M = {}
 
-function M.popup(start_on_heading_above)
-  if not vim.tbl_contains(config.supported_filetypes, vim.bo.filetype) then
+function M.popup(cursor_line)
+  if
+    not vim.tbl_contains(config.supported_filetypes, vim.bo.filetype)
+    and not vim.tbl_contains({ "qf", "lspinfo" }, vim.bo.filetype)
+  then
     feedback.warn("Not a supported filetype")
     return
   end
 
   local bufnr = vim.api.nvim_get_current_buf()
-  local current_line = vim.api.nvim_win_get_cursor(0)[1]
   local _headings = headings.get_headings(bufnr)
 
-  local heading_above = 1
-  if start_on_heading_above then
-    heading_above = headings.get_heading_above(_headings, current_line)
+  local start_line = 1
+  if cursor_line then
+    start_line = math.max(headings.get_heading_above(_headings, cursor_line), 1)
   end
 
-  window.open(_headings, heading_above)
+  window.open(_headings, start_line)
 end
 
 function M.quickfix()
@@ -44,14 +46,14 @@ function M.register_commands()
     {
       "MDHeaders",
       function()
-        M.popup(false)
+        M.popup()
       end,
       { desc = "Generate a table of contents for a Markdown file.", nargs = 0 },
     },
     {
       "MDHeadersCurrent",
       function()
-        M.popup(true)
+        M.popup(vim.api.nvim_win_get_cursor(0)[1])
       end,
       {
         desc = "Generate a table of contents for a Markdown file, using the closest heading.",

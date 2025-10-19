@@ -20,7 +20,7 @@ COMMANDS                                                  *md-headers-commands*
 
                                                                    *:MDHeaders*
 :MDHeaders
-:lua require('md-headers.controller').popup(false)
+:lua require('md-headers.controller').popup()
 
 Opens a floating window displaying a list of headings in the current buffer,
 which includes both Markdown and HTML headings. The user's cursor is placed
@@ -28,7 +28,7 @@ on the first heading in the list.
 
                                                             *:MDHeadersCurrent*
 :MDHeadersCurrent
-:lua require('md-headers.controller').popup(true)
+:lua require('md-headers.controller').popup(vim.api.nvim_win_get_cursor(0)[1])
 
 Opens a floating window that displays a list of headings from the current
 buffer. This list includes both Markdown and HTML headings. The cursor is
