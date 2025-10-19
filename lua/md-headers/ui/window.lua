@@ -1,6 +1,7 @@
 local config = require("md-headers.model.config")
 local feedback = require("md-headers.ui.feedback")
 local popup = require("plenary.popup")
+local utils = require("md-headers.model.utils")
 
 local M = {}
 
@@ -98,8 +99,7 @@ function M.select()
 end
 
 function M.open(headings, start_line)
-  if not headings or #headings == 0 then
-    feedback.warn("No headings to display")
+  if not utils.validate_headings(headings) then
     return
   end
 
