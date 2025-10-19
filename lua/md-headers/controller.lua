@@ -2,6 +2,7 @@ local config = require("md-headers.model.config")
 local feedback = require("md-headers.ui.feedback")
 local headings = require("md-headers.model.headings")
 local window = require("md-headers.ui.window")
+local quickfix = require("md-headers.ui.quickfix")
 
 local M = {}
 
@@ -32,31 +33,11 @@ function M.quickfix()
     return
   end
 
-  local qf_win = vim.fn.getqflist({ winid = true }).winid
-  if qf_win ~= 0 then
-    vim.cmd.cclose()
-    return
-  end
-
   local bufnr = vim.api.nvim_get_current_buf()
+  local current_line = vim.api.nvim_win_get_cursor(0)[1]
   local _headings = headings.get_headings(bufnr)
 
-  if next(_headings) == nil then
-    feedback.warn("No headings to display")
-    return
-  end
-
-  local qf_list = {}
-  for _, heading in ipairs(_headings) do
-    table.insert(qf_list, {
-      filename = vim.fn.expand("%"),
-      lnum = heading.line + 1,
-      text = heading.text,
-    })
-  end
-
-  vim.fn.setqflist(qf_list)
-  vim.cmd.copen()
+  quickfix.open(_headings)
 end
 
 function M.register_commands()

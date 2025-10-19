@@ -31,7 +31,6 @@ M.supported_filetypes = {
   "markdown",
   "markdown.pandoc",
   "markdown.markdown",
-  "markdown",
   "quarto",
   "rmd",
 }
