@@ -34,7 +34,6 @@ function M.quickfix()
   end
 
   local bufnr = vim.api.nvim_get_current_buf()
-  local current_line = vim.api.nvim_win_get_cursor(0)[1]
   local _headings = headings.get_headings(bufnr)
 
   quickfix.open(_headings)
