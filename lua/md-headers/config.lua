@@ -13,6 +13,7 @@ M.config = {
   width = 60,
   height = 10,
   borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+  headerchars = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
   popup_auto_close = true,
   win_options = {
     number = false,
