@@ -1,4 +1,4 @@
-local ts_config = require("nvim-treesitter.configs")
+local ts_config = require("nvim-treesitter.config")
 local config = require("md-headers.config").config
 
 local M = {}
@@ -23,7 +23,7 @@ end
 
 local _check_ts_parser_is_installed = function(lang)
   local matched_parsers = vim.api.nvim_get_runtime_file("parser/" .. lang .. ".so", true) or {}
-  local install_dir = ts_config.get_parser_install_dir()
+  local install_dir = ts_config.get_install_dir()
   if not install_dir then
     return false
   end
