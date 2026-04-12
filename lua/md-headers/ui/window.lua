@@ -62,7 +62,7 @@ local function set_window_contents(bufnr, headings)
   end
 
   vim.api.nvim_buf_set_lines(bufnr, 0, #lines, false, lines)
-  vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
+  vim.api.nvim_set_option_value("modifiable", false, { buf = bufnr })
 end
 
 local function open_window(headings, start_line)

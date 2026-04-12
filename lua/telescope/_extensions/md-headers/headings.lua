@@ -40,7 +40,7 @@ local _create_previewer = function(bufnr)
     define_preview = function(self, entry)
       local lines = vim.api.nvim_buf_get_lines(bufnr, entry.value, entry.value + 10, false)
       vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, lines)
-      vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", "markdown")
+      vim.api.nvim_set_option_value("filetype", "markdown", { buf = self.state.bufnr })
     end,
   })
 end
