@@ -1,4 +1,4 @@
-local ts_config = require("nvim-treesitter.configs")
+local ts_config = require("nvim-treesitter.config")
 local config = require("md-headers.config").config
 
 local M = {}
@@ -23,7 +23,7 @@ end
 
 local _check_ts_parser_is_installed = function(lang)
   local matched_parsers = vim.api.nvim_get_runtime_file("parser/" .. lang .. ".so", true) or {}
-  local install_dir = ts_config.get_parser_install_dir()
+  local install_dir = ts_config.get_install_dir()
   if not install_dir then
     return false
   end
@@ -64,6 +64,21 @@ local _check_borderchars_chars = function()
   local borderchars = config.borderchars
   for _, char in ipairs(borderchars) do
     if type(char) ~= "string" or _get_utf8_len(char) > 1 then
+      return false
+    end
+  end
+
+  return true
+end
+
+local _check_headerchars_len = function()
+  return type(config.headerchars) == "table" and #config.headerchars == 6
+end
+
+local _check_headerchars_chars = function()
+  local headerchars = config.headerchars
+  for _, char in ipairs(headerchars) do
+    if type(char) ~= "string" then
       return false
     end
   end
@@ -141,6 +156,18 @@ M.check = function()
       "Borderchars elements are not strings with length 0 or 1, got: "
         .. vim.inspect(config.borderchars)
     )
+  end
+
+  if _check_headerchars_len() then
+    ok("Headerchars is a table with 6 elements")
+  else
+    error("Headerchars is not a table with 6 elements, got " .. #config.headerchars)
+  end
+
+  if _check_headerchars_chars() then
+    ok("Headerchars elements are strings")
+  else
+    warn("Headerchars elements are not strings, got: " .. vim.inspect(config.headerchars))
   end
 
   if _check_popup_auto_close() then

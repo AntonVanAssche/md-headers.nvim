@@ -4,8 +4,7 @@ local popup = require("plenary.popup")
 local M = {}
 
 local _get_icon = function(depth)
-  local icons = { "󰲡", "󰲣", "󰲥", "󰲧", "󰲩", "󰲫" }
-  return icons[depth] or ""
+  return config.config.headerchars[depth] or ""
 end
 
 local _set_window_options = function(win_id)
@@ -60,7 +59,7 @@ local _set_window_contents = function(bufnr, headings)
   for _, heading in ipairs(headings) do
     table.insert(
       contents,
-      string.rep("  ", heading.depth - 1) .. _get_icon(heading.depth) .. " " .. heading.text
+      string.rep("  ", heading.depth - 1) .. _get_icon(heading.depth) .. heading.text
     )
   end
 
