@@ -11,9 +11,9 @@ end
 
 local function set_window_options(win_id)
   local opts = config.values.win_options
-  vim.api.nvim_win_set_option(win_id, "number", opts.number)
-  vim.api.nvim_win_set_option(win_id, "relativenumber", opts.relativenumber)
-  vim.api.nvim_win_set_option(win_id, "cursorline", opts.cursorline)
+  vim.api.nvim_set_option_value("number", opts.number, { win = win_id })
+  vim.api.nvim_set_option_value("relativenumber", opts.relativenumber, { win = win_id })
+  vim.api.nvim_set_option_value("cursorline", opts.cursorline, { win = win_id })
 end
 
 local function set_buffer_keymaps(bufnr)
@@ -47,7 +47,11 @@ local function create_window(bufnr, width, height, borderchars)
     borderchars = borderchars,
   })
 
-  vim.api.nvim_win_set_option(win.border.win_id, "winhl", "Normal:MarkdownHeadersBorder")
+  vim.api.nvim_set_option_value(
+    "winhl",
+    "Normal:MarkdownHeadersBorder",
+    { win = win.border.win_id }
+  )
   return win
 end
 
