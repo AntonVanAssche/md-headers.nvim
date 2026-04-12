@@ -3,7 +3,7 @@ local M = {}
 local prefix = "MDHeaders: "
 
 function M.error(msg)
-  vim.api.nvim_err_writeln(prefix .. msg)
+  vim.api.nvim_echo({ { prefix .. msg, "ErrorMsg" } }, true, { err = true })
 end
 
 function M.warn(msg)
