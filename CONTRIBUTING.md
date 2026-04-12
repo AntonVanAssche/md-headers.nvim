@@ -15,16 +15,16 @@ labeled with [good first issue](https://github.com/AntonVanAssche/md-headers.nvi
 
 ## Documentation
 
-The plugin includes two types of documentation:
-
-- **GitHub Wiki**: Located in `/.github/WIKI/`.
-- **Vim Helpfile**: Located in `/doc/`.
+The plugin includes documentation in the form of a
+[Vim help file](./doc/md-headers.txt) and the [README](./README.md) of this
+repository.
 
 When updating documentation, ensure both are updated consistently:
 
-- **GitHub Wiki**: Add detailed explanations and examples as necessary.
+- **README**: Add basic information and examples as necessary.
 - **Vim Helpfile**: Ensure the changes are reflected accurately in the help
-  file for in-editor reference.
+  file for in-editor reference. This file acts as the main source of
+  documentation and should be as detailed as possible.
 
 ## Git Commits
 

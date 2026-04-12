@@ -1,7 +1,5 @@
 *md-headers*  Navigate between Mardown headings with ease.
 
-Minimum version of neovim: nightly
-
 Author(s):
   Anton Van Assche <vanasscheanton@gmail.com>
   https://github.com/AntonVanAssche/md-headers.nvim/graphs/contributors
