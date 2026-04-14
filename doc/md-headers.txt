@@ -1,54 +1,49 @@
-*md-headers*  Navigate between Mardown headings with ease.
+*md-headers*  Navigate between Markdown headings with ease.
 
 Author(s):
   Anton Van Assche <vanasscheanton@gmail.com>
   https://github.com/AntonVanAssche/md-headers.nvim/graphs/contributors
 
-                                                        Table of Contents: gO
-===============================================================================
-INTRODUCTION                                                 *md-headers-intro*
+                                                       Table of Contents: gO
+==============================================================================
+INTRODUCTION                                                *md-headers-intro*
 
-md-headers utilizes Neovim's Treesitter to provide a fast and efficient way
-to navigate Markdown and HTML headings, offering features like quick jumping,
-a comprehensive heading list, and full customization to streamline your
-workflow.
+Markdown Headers uses Neovim's Treesitter to provide fast and efficient
+navigation between Markdown and HTML headings, with quick jumping, a heading
+list, and full customization.
 
-===============================================================================
-COMMANDS                                                  *md-headers-commands*
+==============================================================================
+COMMANDS                                                 *md-headers-commands*
 
-                                                                   *:MDHeaders*
+                                                              *:MDHeaders*
 :MDHeaders
 :lua require('md-headers.controller').popup()
 
-Opens a floating window displaying a list of headings in the current buffer,
-which includes both Markdown and HTML headings. The user's cursor is placed
-on the first heading in the list.
+Opens a floating window listing all headings in the current buffer, with the
+cursor on the first heading.
 
-                                                            *:MDHeadersCurrent*
+                                                       *:MDHeadersCurrent*
 :MDHeadersCurrent
 :lua require('md-headers.controller').popup(vim.api.nvim_win_get_cursor(0)[1])
 
-Opens a floating window that displays a list of headings from the current
-buffer. This list includes both Markdown and HTML headings. The cursor is
-automatically positioned on the heading corresponding to the section where
-the user is currently editing.
+Opens a floating window listing all headings, with the cursor focused on the
+heading currently being edited.
 
-                                                           *:MDHeadersQuickfix*
+                                                      *:MDHeadersQuickfix*
 :MDHeadersQuickfix
 :lua require('md-headers.controller').quickfix()
 
-Open a quickfix window with a list of headings in the current buffer. This
-list includes both Markdown and HTML headings. Calling this command again
-will close the quickfix window. Making it act as a toggle.
+Toggles a quickfix window showing all headings in the current buffer (opens
+on first call, closes on second).
 
-                                                          *:MDHeadersTelescope*
+                                                     *:MDHeadersTelescope*
 :MDHeadersTelescope
 :lua require('md-headers.controller').telescope()
 
 See |md-headers-telescope| for more information.
 
-===============================================================================
-TELESCOPE INTEGRATION                                    *md-headers-telescope*
+==============================================================================
+TELESCOPE INTEGRATION                                   *md-headers-telescope*
 
 Markdown Headers provides a Telescope extension to quickly navigate to
 headings in a Markdown file. This is useful for large files where headings
@@ -66,90 +61,113 @@ However, the plugin provides an alias for this command:
   :MDHeadersTelescope
 <
 
-Both commands will open a Telescope picker showing all headings in the current
-buffer, with their depth and text. Select a heading to jump to that section.
-If no headings are found, a warning message is shown.
+Both commands will open a Telescope picker showing all headings in the
+current buffer, with their depth and text. Select a heading to jump to that
+section. If no headings are found, a warning message is shown.
 
-===============================================================================
-CONFIGURATION                                        *md-headers-configuration*
+==============================================================================
+CONFIGURATION                                       *md-headers-configuration*
 
-                                             *md-headers-configuration-options*
-CONFIGURATION OPTIONS
+------------------------------------------------------------------------------
+CONFIGURATION SETUP                           *md-headers-configuration-setup*
 
-md-headers is fully customizable through its configuration options. Below is
-the default configuration table. Users can override these options in their
-Neovim setup to better fit their workflow.
+To override the default configuration: >
 
-Default configuration:
-
->
-  {
-    width = 60,                      -- Width of the floating window
-    height = 10,                     -- Height of the floating window
-    borderchars = {                  -- Characters used for the window border
-      "─", "│", "─", "│", "╭", "╮", "╯", "╰"
-    },
-    headerchars = {                  -- Characters used for the header icons
-      "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 "
-    },
-    popup_auto_close = true,         -- Automatically close popup after use
-    win_options = {                  -- Window options for the floating window
-      number = false,                -- Disable line numbers
-      relativenumber = false,        -- Disable relative line numbers
-      cursorline = true,             -- Enable cursor line highlighting
-    },
-    highlight_groups = {             -- Highlight groups for customization
-      title = { fg = nil, bg = nil },  -- Title text foreground/background
-      border = { fg = nil, bg = nil }, -- Border foreground/background
-      text = { fg = nil, bg = nil },   -- Text foreground/background
-    },
-  }
-<
-
-                                               *md-headers-configuration-setup*
-CONFIGURATION SETUP
-
-To modify the default settings, add the following to your Neovim
-configuration:
-
->
-  require('md-headers').setup {
+  require('md-headers').setup({
     width = 80,
     height = 15,
     borderchars = { "-", "|", "-", "|", "+", "+", "+", "+" },
     headerchars = { "(1)", "(2)", "(3)", "(4)", "(5)", "(6)" },
     popup_auto_close = false,
-    win_options = {
-      number = true,
-      relativenumber = false,
-      cursorline = true,
-    },
     highlight_groups = {
-      title = { fg = "#FF0000", bg = nil },
-      border = { fg = "#00FF00", bg = nil },
-      text = { fg = "#0000FF", bg = nil },
+      title = { fg = "#FF0000" },
+      border = { fg = "#00FF00" },
+      text = { fg = "#0000FF" },
     },
-  }
-<
+  }) <
 
 This setup example customizes the floating window size, changes the border
-characters, changes the header depth icons, disables automatic popup closing, 
+characters, changes the header depth icons, disables automatic popup closing,
 and applies specific colors to highlight groups.
 
-                                 *md-headers-configuration-recommended-keymaps*
-CONFIGURATION RECOMMENDED KEYMAPS
+See |md-headers-configuration-options| for available options.
 
-This plugis does not come with default keymaps. Below are some recommended
-keymaps to add to your configuration for a more accessible experience.
+------------------------------------------------------------------------------
+CONFIGURATION OPTIONS                       *md-headers-configuration-options*
 
+The following options can be passed to |md-headers-configuration-setup|.
+
+                                                        *md-headers-width*
+width                                                           (number)
+    Width of the floating window. ~
+    Default: `60`
+
+                                                       *md-headers-height*
+height                                                          (number)
+    Height of the floating window. ~
+    Default: `10`
+
+                                                  *md-headers-borderchars*
+borderchars                                                     (table)
+    Characters used for the window border. ~
+    Default:
 >
-  local map = vim.api.nvim_set_keymap
-  local opts = { noremap = true, silent = true }
-  map('n', '<leader>mh', ':MDHeaders<CR>', opts)
-  map('n', '<leader>mc', ':MDHeadersCurrent<CR>', opts)
-  map('n', '<leader>mq', ':MDHeadersQuickfix<CR>', opts)
-  map('n', '<leader>mt', ':MDHeadersTelecope<CR>', opts)
+      { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
 <
 
-===============================================================================
+                                                  *md-headers-headerchars*
+headerchars                                                      (table)
+    Icons used for heading levels. ~
+    Default:
+>
+      { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " }
+<
+
+                                             *md-headers-popup-auto-close*
+popup_auto_close                                               (boolean)
+    Automatically close the popup after selection. ~
+    Default: `true`
+
+                                                  *md-headers-win-options*
+win_options                                                    (table)
+    Window options applied to the floating window. ~
+    Default:
+>
+      {
+        number = false,
+        relativenumber = false,
+        cursorline = true,
+      }
+<
+
+                                             *md-headers-highlight-groups*
+highlight_groups                                               (table)
+    Highlight groups used by the popup. ~
+    Default:
+>
+      {
+        title  = { fg = nil, bg = nil },
+        border = { fg = nil, bg = nil },
+        text   = { fg = nil, bg = nil },
+      }
+<
+
+------------------------------------------------------------------------------
+                                *md-headers-configuration-recommended-keymaps*
+CONFIGURATION RECOMMENDED KEYMAPS
+
+This plugin does not provide any keymaps by default. Below are some
+recommended keymaps to add to your configuration for a more accessible
+experience.
+
+>
+  local map = vim.keymap.set
+
+  map("n", "<leader>mh", "<cmd>MDHeaders<cr>")
+  map("n", "<leader>mc", "<cmd>MDHeadersCurrent<cr>")
+  map("n", "<leader>mq", "<cmd>MDHeadersQuickfix<cr>")
+  map("n", "<leader>mt", "<cmd>MDHeadersTelescope<cr>")
+<
+
+==============================================================================
 vim:tw=78:ts=2:sts=2:sw=2:ft=help:norl:
