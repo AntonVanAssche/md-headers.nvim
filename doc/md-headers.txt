@@ -43,6 +43,7 @@ will close the quickfix window. Making it act as a toggle.
 
                                                           *:MDHeadersTelescope*
 :MDHeadersTelescope
+:lua require('md-headers.controller').telescope()
 
 See |md-headers-telescope| for more information.
 
