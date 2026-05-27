@@ -11,6 +11,7 @@ M.defaults = {
     number = false,
     relativenumber = true,
     cursorline = true,
+    scrolloff = 0,
   },
   highlight_groups = {
     title = {

@@ -18,6 +18,7 @@ local function set_window_options(win_id)
   vim.api.nvim_set_option_value("number", opts.number, { win = win_id })
   vim.api.nvim_set_option_value("relativenumber", opts.relativenumber, { win = win_id })
   vim.api.nvim_set_option_value("cursorline", opts.cursorline, { win = win_id })
+  vim.api.nvim_set_option_value("scrolloff", opts.scrolloff, { win = win_id })
 end
 
 local function set_buffer_keymaps(bufnr)
