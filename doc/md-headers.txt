@@ -71,8 +71,8 @@ CONFIGURATION                                       *md-headers-configuration*
 ------------------------------------------------------------------------------
 CONFIGURATION SETUP                           *md-headers-configuration-setup*
 
-To override the default configuration: >
-
+To override the default configuration: 
+>lua
   require('md-headers').setup({
     width = 80,
     height = 15,
@@ -84,7 +84,8 @@ To override the default configuration: >
       border = { fg = "#00FF00" },
       text = { fg = "#0000FF" },
     },
-  }) <
+  })
+<
 
 This setup example customizes the floating window size, changes the border
 characters, changes the header depth icons, disables automatic popup closing,
@@ -111,7 +112,7 @@ height                                                          (number)
 borderchars                                                     (table)
     Characters used for the window border. ~
     Default:
->
+>lua
       { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
 <
 
@@ -119,7 +120,7 @@ borderchars                                                     (table)
 headerchars                                                      (table)
     Icons used for heading levels. ~
     Default:
->
+>lua
       { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " }
 <
 
@@ -137,7 +138,7 @@ popup_auto_close                                               (boolean)
 win_options                                                    (table)
     Window options applied to the floating window. ~
     Default:
->
+>lua
       {
         number = false,
         relativenumber = false,
@@ -150,7 +151,7 @@ win_options                                                    (table)
 highlight_groups                                               (table)
     Highlight groups used by the popup. ~
     Default:
->
+>lua
       {
         title  = { fg = nil, bg = nil },
         border = { fg = nil, bg = nil },
