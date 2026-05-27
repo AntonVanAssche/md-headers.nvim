@@ -39,10 +39,6 @@ local check_ts_parser_is_installed = function(lang)
   return false
 end
 
-local is_hex_color = function(color)
-  return type(color) == "string" and color:match("^#%x%x%x%x%x%x$") ~= nil
-end
-
 local get_utf8_len = function(str)
   local _, count = string.gsub(str, "[%z\1-\127\194-\244][\128-\191]*", "")
   return count
@@ -94,24 +90,70 @@ local check_popup_auto_close = function()
   return type(config.popup_auto_close) == "boolean"
 end
 
+local function check_highlight_error(value)
+  local success, error_message = pcall(function()
+    vim.api.nvim_set_hl(0, "MarkdownHeadersHealthCheck", value)
+  end)
+  if success then
+    return nil
+  end
+
+  local stripped_message = string.match(error_message, "health%.lua:%d+:%s*(.*)")
+  return stripped_message or error_message
+end
+
 local check_highlight_groups = function()
   if type(config.highlight_groups) ~= "table" then
-    return false
+    error("Highlight groups are not a table, got " .. vim.inspect(config.highlight_groups))
+    return
   end
 
-  local valid_highlight_keys = { "title", "border", "text" }
-  for _, key in ipairs(valid_highlight_keys) do
-    local group = config.highlight_groups[key]
-    if
-      group == nil
-      or (group.fg ~= nil and not is_hex_color(group.fg))
-      or (group.bg ~= nil and not is_hex_color(group.bg))
-    then
-      return false
+  if type(config.highlight_groups.headers) ~= "table" then
+    error(
+      "Highlight groups - `headers` is not a table, got "
+        .. vim.inspect(config.highlight_groups.headers)
+    )
+    return
+  end
+
+  -- { "text", config.highlight_groups.text },
+  local checks = {
+    { "title", config.highlight_groups.title },
+    { "border", config.highlight_groups.border },
+    { "text", config.highlight_groups.text },
+    { "headers[1]", config.highlight_groups.headers[1] },
+    { "headers[2]", config.highlight_groups.headers[2] },
+    { "headers[3]", config.highlight_groups.headers[3] },
+    { "headers[4]", config.highlight_groups.headers[4] },
+    { "headers[5]", config.highlight_groups.headers[5] },
+    { "headers[6]", config.highlight_groups.headers[6] },
+  }
+
+  for _, check in ipairs(checks) do
+    local check_name = check[1]
+    local check_value = check[2]
+    if type(check_value) == "string" then
+      ok("Highlight groups - `" .. check_name .. "` is valid")
+    elseif type(check_value) == "table" then
+      local error_message = check_highlight_error(check_value)
+      if error_message then
+        error(
+          "Highlight groups - `"
+            .. check_name
+            .. "` is invalid ("
+            .. error_message
+            .. "), got "
+            .. vim.inspect(check_value)
+        )
+      else
+        ok("Highlight groups - `" .. check_name .. "` is valid")
+      end
+    else
+      error(
+        "Highlight groups - `" .. check_name .. "` is invalid, got " .. vim.inspect(check_value)
+      )
     end
   end
-
-  return true
 end
 
 M.check = function()
@@ -186,11 +228,7 @@ M.check = function()
     error("Popup_auto_close is not a boolean, got " .. vim.inspect(config.popup_auto_close))
   end
 
-  if check_highlight_groups() then
-    ok("Highlight groups are valid")
-  else
-    error("Highlight groups are not valid, got: " .. vim.inspect(config.highlight_groups))
-  end
+  check_highlight_groups()
 end
 
 return M

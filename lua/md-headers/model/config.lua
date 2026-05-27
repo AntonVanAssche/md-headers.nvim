@@ -26,6 +26,7 @@ M.defaults = {
       fg = nil,
       bg = nil,
     },
+    headers = {},
   },
 }
 
@@ -37,28 +38,18 @@ M.supported_filetypes = {
   "rmd",
 }
 
-local function set_hl_colors()
-  local highlight_groups = M.values.highlight_groups
+M.resolved_highlights = {}
 
-  if highlight_groups.title.fg ~= nil or highlight_groups.title.bg ~= nil then
-    vim.api.nvim_set_hl(0, "MarkdownHeadersTitle", {
-      fg = highlight_groups.title.fg or "NONE",
-      bg = highlight_groups.title.bg or "NONE",
-    })
-  end
-
-  if highlight_groups.border.fg ~= nil or highlight_groups.border.bg ~= nil then
-    vim.api.nvim_set_hl(0, "MarkdownHeadersBorder", {
-      fg = highlight_groups.border.fg or "NONE",
-      bg = highlight_groups.border.bg or "NONE",
-    })
-  end
-
-  if highlight_groups.text.fg ~= nil or highlight_groups.text.bg ~= nil then
-    vim.api.nvim_set_hl(0, "MarkdownHeadersWindow", {
-      fg = highlight_groups.text.fg or "NONE",
-      bg = highlight_groups.text.bg or "NONE",
-    })
+local function resolve_highlight(default_name, config_value)
+  if type(config_value) == "string" then -- existing highlight group name
+    return config_value
+  elseif config_value == nil then -- fall back to non-existent highlight group
+    return ""
+  else
+    pcall(function()
+      vim.api.nvim_set_hl(0, default_name, config_value)
+    end)
+    return default_name
   end
 end
 
@@ -66,7 +57,20 @@ function M.setup(opts)
   opts = opts or {}
   M.values = vim.tbl_deep_extend("force", M.defaults, opts)
 
-  set_hl_colors()
+  local hl = M.values.highlight_groups
+  M.resolved_highlights = {
+    title = resolve_highlight("MarkdownHeadersTitle", hl.title),
+    border = resolve_highlight("MarkdownHeadersBorder", hl.border),
+    text = resolve_highlight("MarkdownHeadersWindow", hl.text),
+    headers = {
+      resolve_highlight("MarkdownHeadersH1", hl.headers[1]),
+      resolve_highlight("MarkdownHeadersH2", hl.headers[2]),
+      resolve_highlight("MarkdownHeadersH3", hl.headers[3]),
+      resolve_highlight("MarkdownHeadersH4", hl.headers[4]),
+      resolve_highlight("MarkdownHeadersH5", hl.headers[5]),
+      resolve_highlight("MarkdownHeadersH6", hl.headers[6]),
+    },
+  }
 end
 
 return M
