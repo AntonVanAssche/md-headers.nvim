@@ -56,6 +56,10 @@ local check_height = function()
   return type(config.height) == "number" and config.height > 0
 end
 
+local check_indent = function()
+  return type(config.indent) == "number" and config.indent >= 0
+end
+
 local check_borderchars_len = function()
   return type(config.borderchars) == "table" and #config.borderchars == 8
 end
@@ -141,6 +145,12 @@ M.check = function()
     ok("Height is a positive number")
   else
     error("Height is not a positive number, got " .. vim.inspect(config.height))
+  end
+
+  if check_indent() then
+    ok("Indent is a non-negative number")
+  else
+    error("Indent is not a non-negative number, got " .. vim.inspect(config.height))
   end
 
   if check_borderchars_len() then
