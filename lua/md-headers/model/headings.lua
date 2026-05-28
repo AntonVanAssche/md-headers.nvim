@@ -20,7 +20,7 @@ local html_query = vim.treesitter.query.parse(
 ]]
 )
 
-local _get_root = function(bufnr, lang)
+local get_root = function(bufnr, lang)
   local parser = vim.treesitter.get_parser(bufnr, lang, {})
   if parser then
     local root = parser:parse()[1]
@@ -28,7 +28,7 @@ local _get_root = function(bufnr, lang)
   end
 end
 
-local _get_fenced_code_block_ranges = function(bufnr)
+local get_fenced_code_block_ranges = function(bufnr)
   local fenced_ranges = {}
 
   local function walk(node)
@@ -42,7 +42,7 @@ local _get_fenced_code_block_ranges = function(bufnr)
     end
   end
 
-  local root = _get_root(bufnr, "markdown")
+  local root = get_root(bufnr, "markdown")
   if root then
     walk(root)
   end
@@ -50,7 +50,7 @@ local _get_fenced_code_block_ranges = function(bufnr)
   return fenced_ranges
 end
 
-local function _is_inside_fenced(line, fenced_ranges)
+local function is_inside_fenced(line, fenced_ranges)
   for _, range in ipairs(fenced_ranges) do
     if line >= range[1] and line <= range[2] then
       return true
@@ -59,9 +59,9 @@ local function _is_inside_fenced(line, fenced_ranges)
   return false
 end
 
-local _query_md = function(bufnr)
+local query_md = function(bufnr)
   local headings = {}
-  local root = _get_root(bufnr, "markdown")
+  local root = get_root(bufnr, "markdown")
 
   for id, node in md_query:iter_captures(root, bufnr, 0, -1) do
     if md_query.captures[id] == "md_heading" then
@@ -81,10 +81,10 @@ local _query_md = function(bufnr)
   return headings
 end
 
-local _query_html = function(bufnr)
+local query_html = function(bufnr)
   local headings = {}
-  local fenced_ranges = _get_fenced_code_block_ranges(bufnr)
-  local root = _get_root(bufnr, "html")
+  local fenced_ranges = get_fenced_code_block_ranges(bufnr)
+  local root = get_root(bufnr, "html")
   local depth = nil
 
   for id, node in html_query:iter_captures(root, bufnr, 0, -1) do
@@ -92,7 +92,7 @@ local _query_html = function(bufnr)
     local range = { node:range() }
     local line = range[1]
 
-    if _is_inside_fenced(line, fenced_ranges) then
+    if is_inside_fenced(line, fenced_ranges) then
       goto continue
     end
 
@@ -111,7 +111,7 @@ local _query_html = function(bufnr)
   return headings
 end
 
-local _sort_headings = function(headings)
+local sort_headings = function(headings)
   table.sort(headings, function(a, b)
     return a.line < b.line
   end)
@@ -120,8 +120,8 @@ local _sort_headings = function(headings)
 end
 
 M.get_headings = function(bufnr)
-  local md_headings = _query_md(bufnr) or {}
-  local html_headings = _query_html(bufnr) or {}
+  local md_headings = query_md(bufnr) or {}
+  local html_headings = query_html(bufnr) or {}
 
   local headings = {}
   for _, h in ipairs(md_headings) do
@@ -131,16 +131,16 @@ M.get_headings = function(bufnr)
   for _, h in ipairs(html_headings) do
     table.insert(headings, h)
   end
-  headings = _sort_headings(headings)
+  headings = sort_headings(headings)
 
   return headings
 end
 
-M.get_heading_above = function(headings, current_line)
+M.get_index_of_heading_above = function(headings, start_line)
   local popup_window_line = 0
 
   for _, heading in ipairs(headings) do
-    if heading.line < current_line then
+    if heading.line < start_line then
       popup_window_line = popup_window_line + 1
     end
   end

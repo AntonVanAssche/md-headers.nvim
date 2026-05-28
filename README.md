@@ -1,57 +1,106 @@
-<div align="center">
-  <h1>
-    Markdown Headers
-  </h1>
-  <p align="center">
-      Navigate between Mardown heading with ease
-    <br/>
-    <a href="https://github.com/AntonVanAssche/md-headers.nvim/wiki"><strong>Explore the docs »</strong></a>
-    <br/>
-    <br/>
-    <strong>·</strong>
-    <a href="https://github.com/AntonVanAssche/md-headers.nvim/issues">Report Bug</a>
-    <strong>·</strong>
-    <a href="https://github.com/AntonVanAssche/md-headers.nvim/issues">Request Feature</a>
-  </p>
-  <p align="center">
-    <a href="https://github.com/AntonVanAssche/md-headers.nvim/graphs/contributors">
-      <img src="https://img.shields.io/github/contributors/AntonVanAssche/md-headers.nvim.svg?style=for-the-badge">
-    </a>
-    <a href="https://github.com/AntonVanAssche/md-headers.nvim/network/members">
-      <img src="https://img.shields.io/github/forks/AntonVanAssche/md-headers.nvim.svg?style=for-the-badge">
-    </a>
-    <a href="https://github.com/AntonVanAssche/md-headers.nvim">
-      <img src="https://img.shields.io/github/stars/AntonVanAssche/md-headers.nvim.svg?style=for-the-badge">
-    </a>
-    <a href="https://github.com/AntonVanAssche/md-headers.nvim">
-      <img src="https://img.shields.io/github/issues/AntonVanAssche/md-headers.nvim.svg?style=for-the-badge">
-    </a>
-    <a href="https://github.com/AntonVanAssche/md-headers.nvim/blob/master/LICENSE">
-      <img src="https://img.shields.io/github/license/AntonVanAssche/md-headers.nvim.svg?style=for-the-badge">
-    </a>
-  </p>
-</div>
+# Markdown Headers
 
-## About Markdown Headers
+Markdown Headers uses Neovim's Treesitter to provide fast and efficient
+navigation between Markdown and HTML headings, with quick jumping, a heading
+list, and full customization.
 
 ![Preview GIF](./assets/preview.gif)
 
-Markdown Headers is a Neovim plugin for smooth navigation in Markdown files,
-ideal for notes, documentation, or structured text.
+## Installation
 
-### Key Features
+This plugin depends on:
 
-- **Quick Navigation**: Jump between Markdown/HTML headings.
-- **Heading List**: View a list of all headings.
-- **Treesitter Integration**: Accurate heading detection.
-- **Telescope Integration**: Navigate headings with Telescope.
-- **Customizable**: Adjust layout, colors, and behavior.
+- [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
+- [nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+  - __Parsers__: `markdown`, `html`
 
-## Documentation
+An example using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
-- **[Installation](https://github.com/AntonVanAssche/md-headers.nvim/wiki/Installation)**
-- **[Usage](https://github.com/AntonVanAssche/md-headers.nvim/wiki/Usage)**
-- **[Configuration](https://github.com/AntonVanAssche/md-headers.nvim/wiki/Configuration)**
+```lua
+return {
+  'AntonVanAssche/md-headers.nvim',
+  cmd = {
+    'MDHeaders',
+    'MDHeadersCurrent',
+    'MDHeadersQuickfix',
+    'MDHeadersTelescope',
+  },
+  dependencies = {
+    'nvim-lua/plenary.nvim',
+    'nvim-treesitter/nvim-treesitter',
+  },
+  ft = { 'markdown' },
+  opts = {},
+}
+```
+
+> [!IMPORTANT]
+> Markdown parsing requires a Treesitter parser. Neovim does __not__ ship with a
+> Markdown parser by default.
+>
+> Install it manually or via nvim-treesitter. When using nvim-treesitter,
+> ensure it loads __before__ this plugin.
+
+## Commands
+
+- `:MDHeaders`: Show all headings in a popup
+- `:MDHeadersCurrent`: Show headings focused on current section
+- `:MDHeadersQuickfix`: Toggle quickfix list with headings
+- `:MDHeadersTelescope`: Open Telescope picker (requires
+  [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim))
+
+## Telescope Integration
+
+Markdown Headers provides a Telescope extension to navigate headings in the
+current buffer, giving you a preview of each section so you can quickly
+understand where you are in large files.
+
+As any other Telescope extension, you can call it with the following command:
+
+```vim
+:Telescope md-headers headings
+```
+
+However, the plugin provides an alias for this command:
+
+```vim
+:MDHeadersTelescope
+```
+
+## Configuration
+
+Default config:
+
+```lua
+{
+  width = 60,
+  height = 10,
+  borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+  headerchars = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
+  popup_auto_close = true,
+  win_options = {
+    number = false,
+    relativenumber = false,
+    cursorline = true,
+  },
+  highlight_groups = {
+    title = { fg = nil, bg = nil },
+    border = { fg = nil, bg = nil },
+    text = { fg = nil, bg = nil },
+  },
+}
+```
+
+## Recommended Keymaps
+
+```lua
+local map = vim.keymap.set
+
+map("n", "<leader>mh", "<cmd>MDHeaders<cr>")
+map("n", "<leader>mc", "<cmd>MDHeadersCurrent<cr>")
+map("n", "<leader>mq", "<cmd>MDHeadersQuickfix<cr>")
+map("n", "<leader>mt", "<cmd>MDHeadersTelescope<cr>")
+```
 
 ## Contributing
 
