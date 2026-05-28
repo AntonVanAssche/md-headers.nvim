@@ -87,6 +87,7 @@ Default config:
     title = { fg = "NONE", bg = "NONE" },
     border = { fg = "NONE", bg = "NONE" },
     text = { fg = "NONE", bg = "NONE" },
+    headers = {},
   },
 }
 ```
