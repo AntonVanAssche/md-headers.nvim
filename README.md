@@ -77,11 +77,13 @@ Default config:
   height = 10,
   borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
   headerchars = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
+  indent = 2,
   popup_auto_close = true,
   win_options = {
     number = false,
     relativenumber = false,
     cursorline = true,
+    scrolloff = 0,
   },
   highlight_groups = {
     title = { fg = nil, bg = nil },
