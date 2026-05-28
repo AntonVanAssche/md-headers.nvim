@@ -84,9 +84,9 @@ Default config:
     cursorline = true,
   },
   highlight_groups = {
-    title = { fg = nil, bg = nil },
-    border = { fg = nil, bg = nil },
-    text = { fg = nil, bg = nil },
+    title = { fg = "NONE", bg = "NONE" },
+    border = { fg = "NONE", bg = "NONE" },
+    text = { fg = "NONE", bg = "NONE" },
   },
 }
 ```

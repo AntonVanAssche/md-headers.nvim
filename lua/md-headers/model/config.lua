@@ -15,16 +15,16 @@ M.defaults = {
   },
   highlight_groups = {
     title = {
-      fg = nil,
-      bg = nil,
+      fg = "NONE",
+      bg = "NONE",
     },
     border = {
-      fg = nil,
-      bg = nil,
+      fg = "NONE",
+      bg = "NONE",
     },
     text = {
-      fg = nil,
-      bg = nil,
+      fg = "NONE",
+      bg = "NONE",
     },
     headers = {},
   },
