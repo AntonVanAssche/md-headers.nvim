@@ -82,6 +82,7 @@ Default config:
     number = false,
     relativenumber = false,
     cursorline = true,
+    scrolloff = 0,
   },
   highlight_groups = {
     title = { fg = nil, bg = nil },
