@@ -150,7 +150,7 @@ M.check = function()
   if check_indent() then
     ok("Indent is a non-negative number")
   else
-    error("Indent is not a non-negative number, got " .. vim.inspect(config.height))
+    error("Indent is not a non-negative number, got " .. vim.inspect(config.indent))
   end
 
   if check_borderchars_len() then
