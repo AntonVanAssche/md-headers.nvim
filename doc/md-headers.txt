@@ -124,6 +124,11 @@ headerchars                                                      (table)
       { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " }
 <
 
+                                                       *md-headers-indent*
+indent                                                          (number)
+    Indent width per heading level. ~
+    Default: `2`
+
                                              *md-headers-popup-auto-close*
 popup_auto_close                                               (boolean)
     Automatically close the popup after selection. ~

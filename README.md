@@ -77,6 +77,7 @@ Default config:
   height = 10,
   borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
   headerchars = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
+  indent = 2,
   popup_auto_close = true,
   win_options = {
     number = false,

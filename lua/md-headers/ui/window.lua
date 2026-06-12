@@ -5,6 +5,10 @@ local utils = require("md-headers.model.utils")
 
 local M = {}
 
+local function get_indent(depth)
+  return string.rep(" ", config.values.indent * (depth - 1))
+end
+
 local function get_icon(depth)
   return config.values.headerchars[depth] or ""
 end
@@ -59,7 +63,7 @@ end
 local function set_window_contents(bufnr, headings)
   local lines = {}
   for _, h in ipairs(headings) do
-    table.insert(lines, string.rep("  ", h.depth - 1) .. get_icon(h.depth) .. h.text)
+    table.insert(lines, get_indent(h.depth) .. get_icon(h.depth) .. h.text)
   end
 
   vim.api.nvim_buf_set_lines(bufnr, 0, #lines, false, lines)
