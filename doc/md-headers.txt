@@ -138,6 +138,7 @@ win_options                                                    (table)
         number = false,
         relativenumber = false,
         cursorline = true,
+        scrolloff = 0,
       }
 <
 
