@@ -83,6 +83,14 @@ To override the default configuration:
       title = { fg = "#FF0000" },
       border = { fg = "#00FF00" },
       text = { fg = "#0000FF" },
+      headers = {
+        "SomeH1Group",
+        "SomeH2Group",
+        "SomeH3Group",
+        "SomeH4Group",
+        "SomeH5Group",
+        "SomeH6Group",
+      }
     },
   })
 <
@@ -153,11 +161,15 @@ highlight_groups                                               (table)
     Default:
 >lua
       {
-        title  = { fg = nil, bg = nil },
-        border = { fg = nil, bg = nil },
-        text   = { fg = nil, bg = nil },
+        title   = nil,
+        border  = nil,
+        text    = nil,
+        headers = { nil, nil, nil, nil, nil, nil },
       }
 <
+    Values in this table may be either a string, denoting an existing
+    highlight group name, or a highlight definition map as defined in
+    |nvim_set_hl()|.
 
 ------------------------------------------------------------------------------
                                 *md-headers-configuration-recommended-keymaps*

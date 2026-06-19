@@ -86,9 +86,10 @@ Default config:
     scrolloff = 0,
   },
   highlight_groups = {
-    title = { fg = nil, bg = nil },
-    border = { fg = nil, bg = nil },
-    text = { fg = nil, bg = nil },
+    title = nil,
+    border = nil,
+    text = nil,
+    headers = { nil, nil, nil, nil, nil, nil },
   },
 }
 ```

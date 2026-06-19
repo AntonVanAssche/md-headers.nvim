@@ -4,6 +4,7 @@ local popup = require("plenary.popup")
 local utils = require("md-headers.model.utils")
 
 local M = {}
+local highlight_namespace = vim.api.nvim_create_namespace("md-headers")
 
 local function get_indent(depth)
   return string.rep(" ", config.values.indent * (depth - 1))
@@ -11,6 +12,10 @@ end
 
 local function get_icon(depth)
   return config.values.headerchars[depth] or ""
+end
+
+local function get_highlight(depth)
+  return config.resolved_highlights.headers[depth]
 end
 
 local function set_window_options(win_id)
@@ -42,9 +47,9 @@ end
 local function create_window(bufnr, width, height, borderchars)
   local _, win = popup.create(bufnr, {
     title = "Markdown Headers",
-    highlight = "MarkdownHeadersWindow",
-    titlehighlight = "MarkdownHeadersTitle",
-    borderhighlight = "MarkdownHeadersBorder",
+    highlight = config.resolved_highlights.text,
+    titlehighlight = config.resolved_highlights.title,
+    borderhighlight = config.resolved_highlights.border,
     line = math.floor((vim.o.lines - height) / 2 - 1),
     col = math.floor((vim.o.columns - width) / 2),
     minwidth = width,
@@ -68,6 +73,19 @@ local function set_window_contents(bufnr, headings)
 
   vim.api.nvim_buf_set_lines(bufnr, 0, #lines, false, lines)
   vim.api.nvim_set_option_value("modifiable", false, { buf = bufnr })
+
+  for line, heading in ipairs(headings) do
+    local highlight = get_highlight(heading.depth)
+    if highlight then
+      vim.api.nvim_buf_set_extmark(
+        bufnr,
+        highlight_namespace,
+        line - 1,
+        #get_indent(heading.depth),
+        { end_col = #lines[line], hl_group = highlight }
+      )
+    end
+  end
 end
 
 local function open_window(headings, start_line)
