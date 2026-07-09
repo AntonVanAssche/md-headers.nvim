@@ -1,6 +1,5 @@
 local config = require("md-headers.model.config")
 local feedback = require("md-headers.ui.feedback")
-local popup = require("plenary.popup")
 local utils = require("md-headers.model.utils")
 
 local M = {}
@@ -45,23 +44,28 @@ local function set_buffer_keymaps(bufnr)
 end
 
 local function create_window(bufnr, width, height, borderchars)
-  local _, win = popup.create(bufnr, {
-    title = "Markdown Headers",
-    highlight = config.resolved_highlights.text,
-    titlehighlight = config.resolved_highlights.title,
-    borderhighlight = config.resolved_highlights.border,
-    line = math.floor((vim.o.lines - height) / 2 - 1),
+  local win = vim.api.nvim_open_win(bufnr, true, {
+    relative = "editor",
+    style = "minimal",
+    width = width,
+    height = height,
+    row = math.floor((vim.o.lines - height) / 2 - 1),
     col = math.floor((vim.o.columns - width) / 2),
-    minwidth = width,
-    minheight = height,
-    borderchars = borderchars,
+    border = borderchars,
+    title = "Markdown Headers",
+    title_pos = "center",
   })
 
   vim.api.nvim_set_option_value(
     "winhl",
-    "Normal:MarkdownHeadersBorder",
-    { win = win.border.win_id }
+    table.concat({
+      "Normal:" .. config.resolved_highlights.text,
+      "FloatBorder:" .. config.resolved_highlights.border,
+      "FloatTitle:" .. config.resolved_highlights.title,
+    }, ","),
+    { win = win }
   )
+
   return win
 end
 
@@ -95,7 +99,7 @@ local function open_window(headings, start_line)
 
   set_window_contents(bufnr, headings)
   vim.api.nvim_set_current_buf(bufnr)
-  vim.api.nvim_win_set_cursor(win.win_id, { start_line, 0 })
+  vim.api.nvim_win_set_cursor(win, { start_line, 0 })
 
   vim.b[bufnr].headings = headings
 end
@@ -122,7 +126,8 @@ function M.select()
     return
   end
 
-  goto_heading(headings, line)
+  local index = math.max(1, math.min(line, #headings))
+  goto_heading(headings, index)
 end
 
 function M.open(headings, start_line)
@@ -131,8 +136,10 @@ function M.open(headings, start_line)
   end
 
   open_window(headings, start_line)
-  set_window_options(0)
-  set_buffer_keymaps(0)
+
+  local win = vim.api.nvim_get_current_win()
+  set_window_options(win)
+  set_buffer_keymaps(vim.api.nvim_get_current_buf())
 end
 
 function M.close()
