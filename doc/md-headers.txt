@@ -71,7 +71,7 @@ CONFIGURATION                                       *md-headers-configuration*
 ------------------------------------------------------------------------------
 CONFIGURATION SETUP                           *md-headers-configuration-setup*
 
-To override the default configuration: 
+To override the default configuration:
 >lua
   require('md-headers').setup({
     width = 80,
