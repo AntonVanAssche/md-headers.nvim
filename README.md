@@ -10,7 +10,6 @@ list, and full customization.
 
 This plugin depends on:
 
-- [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
 - [nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
   - __Parsers__: `markdown`, `html`
 
@@ -26,7 +25,6 @@ return {
     'MDHeadersTelescope',
   },
   dependencies = {
-    'nvim-lua/plenary.nvim',
     'nvim-treesitter/nvim-treesitter',
   },
   ft = { 'markdown' },
@@ -75,7 +73,7 @@ Default config:
 {
   width = 60,
   height = 10,
-  borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+  borderchars = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
   headerchars = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
   indent = 2,
   popup_auto_close = true,
